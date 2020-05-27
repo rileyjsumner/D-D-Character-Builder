@@ -7,10 +7,6 @@ import { Character } from '../character';
   styleUrls: ['./character-select.component.scss'],
 })
 export class CharacterSelectComponent implements OnInit {
-  private character: Character = {
-    id: 1,
-    name: 'Glynbalar'
-  };
 
   constructor() {}
 
