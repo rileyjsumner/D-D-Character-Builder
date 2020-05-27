@@ -25,5 +25,30 @@ export const CHARACTERS: Character[] = [
       charisma: 0
     },
     equipment: {}
+  },
+  { id: 2,
+    name: 'Cayn Redfall',
+    class: 'Fighter',
+    race: 'Human',
+    subClass: 'Champion',
+    subRace: 'White',
+    archetype: 'Archer',
+    abilityScores: {
+      strength: 15,
+      dexterity: 13,
+      constitution: 14,
+      intelligence: 17,
+      wisdom: 13,
+      charisma: 11
+    },
+    abilityModifiers: {
+      strength: 3,
+      dexterity: 1,
+      constitution: 2,
+      intelligence: 3,
+      wisdom: 1,
+      charisma: 0
+    },
+    equipment: {}
   }
 ];

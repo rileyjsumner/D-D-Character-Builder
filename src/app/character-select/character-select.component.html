@@ -1,6 +1,5 @@
 <h1>Edit Character</h1>
 
-<div>
-  <label for="character_name">Name:</label>
-  <input id="character_name" [(ngModel)]="character.name" placeholder="Name"/>
-</div>
+<ul class="character_list">
+  <li *ngFor="let character of characters">{{character.id}} -> {{character.name}}</li>
+</ul>

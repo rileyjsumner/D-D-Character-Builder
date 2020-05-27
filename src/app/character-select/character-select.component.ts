@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Character } from '../character';
+import {CHARACTERS} from '../mock-characters';
 
 @Component({
   selector: 'app-character-select',
@@ -8,6 +8,7 @@ import { Character } from '../character';
 })
 export class CharacterSelectComponent implements OnInit {
 
+  private characters = CHARACTERS;
   constructor() {}
 
   ngOnInit(): void {
