@@ -3,6 +3,7 @@ let path = require('path');
 let mongoose = require('mongoose');
 let cors = require('cors');
 let bodyParser = require('body-parser');
+let createError = require('createerror');
 let dataBaseConfig = require('./db/db');
 
 mongoose.Promise = global.Promise;
@@ -30,12 +31,15 @@ app.use('/api', userRoute);
 
 const PORT = process.env.PORT || 6200;
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log('Listening on port: ', PORT);
 });
 
 app.use((req, res, next) => {
-  next(createError(404));
+  next(createError({
+    name: '404',
+    message: 'File not found'
+  }));
 });
 
 app.get('/', (req, res) => {

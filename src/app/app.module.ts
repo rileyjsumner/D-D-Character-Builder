@@ -11,6 +11,7 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { GetUserComponent } from './components/get-user/get-user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent],

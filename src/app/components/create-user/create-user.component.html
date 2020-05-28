@@ -1,1 +1,54 @@
-<p>create-user works!</p>
+<!-- Title group  -->
+<div class="title-group">
+  <h1 class="mat-h1">Add User</h1>
+  <mat-divider fxFlex="1 0"></mat-divider>
+</div>
+
+<!-- Form -->
+<div class="inner-wrapper">
+  <form [formGroup]="userForm" (ngSubmit)="submitUserForm()" #resetUserForm="ngForm" novalidate>
+    <!-- Left block -->
+    <mat-card>
+      <div class="controlers-wrapper">
+        <!-- Name -->
+        <mat-form-field class="example-full-width">
+          <label>Username
+            <input matInput placeholder="Username" formControlName="username">
+          </label>
+          <mat-error *ngIf="handleError('username', 'required')">
+            You must provide a<strong>username</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field class="example-full-width">
+          <label>Email
+            <input matInput placeholder="Email" formControlName="email">
+          </label>
+          <mat-error *ngIf="handleError('email', 'required')">
+            You must provide an<strong> email</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field>
+          <label>Password
+            <input matInput placeholder="Password" formControlName="password">
+          </label>
+          <mat-error *ngIf="handleError('password', 'required')">
+            You must provide a<strong>password</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+
+    <!-- Submit & Reset -->
+    <mat-card>
+      <div class="full-wrapper button-wrapper">
+        <div class="button-wrapper">
+          <button mat-flat-button color="warn">Submit</button>
+        </div>
+      </div>
+    </mat-card>
+  </form>
+</div>

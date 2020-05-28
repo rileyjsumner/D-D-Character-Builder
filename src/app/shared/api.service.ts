@@ -40,7 +40,7 @@ export class ApiService {
         catchError(this.errorMgmt)
       );
   }
-  DeleteStudent(id): Observable<any> {
+  DeleteUser(id): Observable<any> {
     const API_URL = `${this.endpoint}/delete-user/${id}`;
     return this.http.delete(API_URL)
       .pipe(
