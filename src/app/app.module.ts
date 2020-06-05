@@ -1,24 +1,34 @@
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AngularMaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateUserComponent } from './components/create-user/create-user.component';
-import { EditUserComponent } from './components/edit-user/edit-user.component';
-import { GetUserComponent } from './components/get-user/get-user.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatCardModule} from '@angular/material/card';
+
+import { UsersComponent } from './users/users.component';
+import { UserAddComponent } from './user-add/user-add.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserViewComponent } from './user-view/user-view.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateUserComponent,
-    EditUserComponent,
-    GetUserComponent
+    UsersComponent,
+    UserAddComponent,
+    UserEditComponent,
+    UserViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,14 +36,19 @@ import {MatCardModule} from '@angular/material/card';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    AngularMaterialModule,
-    MatSidenavModule,
-    MatCardModule
+    NoopAnimationsModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 
 export class AppModule { }
