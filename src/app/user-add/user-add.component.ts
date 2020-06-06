@@ -18,7 +18,6 @@ export class UserErrorStateMatcher implements ErrorStateMatcher {
 export class UserAddComponent implements OnInit {
 
   userForm: FormGroup;
-  id = '';
   name = '';
   email = '';
   password = '';
@@ -39,9 +38,9 @@ export class UserAddComponent implements OnInit {
     this.isLoadingResults = true;
     this.api.addUser(this.userForm.value)
       .subscribe((res: any) => {
-        const id = res.id;
+        const id = res._id;
         this.isLoadingResults = false;
-        this.router.navigate(['user-view', id]);
+        this.router.navigate(['users/', id]);
       }, (err: any) => {
         console.log(err);
         this.isLoadingResults = false;

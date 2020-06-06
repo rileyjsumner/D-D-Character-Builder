@@ -20,7 +20,7 @@ export class UserErrorStateMatcher implements ErrorStateMatcher {
 export class UserEditComponent implements OnInit {
 
   userForm: FormGroup;
-  id = '';
+  _id = '';
   name = '';
   email = '';
   password = '';
@@ -40,7 +40,7 @@ export class UserEditComponent implements OnInit {
 
   getUser(id: any) {
     this.api.getUser(id).subscribe((data: any) => {
-      this.id = data.id;
+      this._id = data._id;
       this.userForm.setValue({
         name: data.name,
         email: data.email,
@@ -51,11 +51,11 @@ export class UserEditComponent implements OnInit {
 
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.api.updateUser(this.id, this.userForm.value)
+    this.api.updateUser(this._id, this.userForm.value)
       .subscribe((res: any) => {
         const id = res.id;
         this.isLoadingResults = false;
-        this.router.navigate(['/user-view', id]);
+        this.router.navigate(['/users/', id]);
       }, (err: any) => {
         console.log(err);
         this.isLoadingResults = false;
@@ -63,7 +63,7 @@ export class UserEditComponent implements OnInit {
   }
 
   userDetails() {
-    this.router.navigate(['/user-view', this.id]);
+    this.router.navigate(['/users/', this._id]);
   }
 
 }

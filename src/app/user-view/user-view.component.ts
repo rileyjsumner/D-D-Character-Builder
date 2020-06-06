@@ -9,7 +9,7 @@ import {User} from '../user';
   styleUrls: ['./user-view.component.scss']
 })
 export class UserViewComponent implements OnInit {
-  user: User = { id: '', name: '', email: '', password: ''};
+  user: User = { _id: '', name: '', email: '', password: ''};
   isLoadingResults = true;
 
   constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }

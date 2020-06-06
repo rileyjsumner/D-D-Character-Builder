@@ -40,7 +40,7 @@ export class ApiService {
   }
   addUser(user: User): Observable<User> {
     return this.http.post<User>(`${apiUrl}/add`, user, httpOptions).pipe(
-      tap((newUser: any) => console.log(`added user with id:${newUser.id}`)),
+      tap((newUser: any) => console.log(`added user with id:${newUser._id}`)),
       catchError(this.handleError<User>('addUser'))
     );
   }
