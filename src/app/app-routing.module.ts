@@ -5,10 +5,10 @@ import { UsersComponent } from './user-modules/users/users.component';
 import { UserAddComponent } from './user-modules/user-add/user-add.component';
 import { UserEditComponent } from './user-modules/user-edit/user-edit.component';
 import { UserViewComponent } from './user-modules/user-view/user-view.component';
-import {CharactersComponent} from './character-modules/characters/characters.component';
-import {CharacterViewComponent} from './character-modules/character-view/character-view.component';
-import {CharacterAddComponent} from './character-modules/character-add/character-add.component';
-import {CharacterEditComponent} from './character-modules/character-edit/character-edit.component';
+import { CharactersComponent } from './character-modules/characters/characters.component';
+import { CharacterViewComponent } from './character-modules/character-view/character-view.component';
+import { CharacterAddComponent } from './character-modules/character-add/character-add.component';
+import { CharacterEditComponent } from './character-modules/character-edit/character-edit.component';
 
 const routes: Routes = [
   {
