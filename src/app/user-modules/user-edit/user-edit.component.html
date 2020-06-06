@@ -4,35 +4,29 @@
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
   </div>
   <div class="button-row">
-    <a mat-flat-button color="primary" [routerLink]="['/users']"><mat-icon>list</mat-icon></a>
+    <a mat-flat-button color="primary" (click)="userDetails()"><mat-icon>info</mat-icon></a>
   </div>
   <mat-card class="example-card">
     <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
       <mat-form-field class="example-full-width">
-        <label>Name:
           <input matInput placeholder="Name" formControlName="name"
                  [errorStateMatcher]="matcher">
-        </label>
         <mat-error>
-          <span *ngIf="!userForm.get('name').valid && userForm.get('name').touched">Please enter Users Name</span>
+          <span *ngIf="!userForm.get('name').valid && userForm.get('name').touched">Please enter name</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <label>Email:
-          <input matInput placeholder="email" formControlName="email"
+          <input matInput placeholder="Email" formControlName="email"
                  [errorStateMatcher]="matcher">
-        </label>
         <mat-error>
           <span *ngIf="!userForm.get('email').valid && userForm.get('email').touched">Please enter email</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <label>Password:
           <input matInput placeholder="password" formControlName="password"
                  [errorStateMatcher]="matcher">
-        </label>
         <mat-error>
-          <span *ngIf="!userForm.get('password').valid && userForm.get('password').touched">Please enter Password</span>
+          <span *ngIf="!userForm.get('password').valid && userForm.get('password').touched">Please enter password</span>
         </mat-error>
       </mat-form-field>
       <div class="button-row">

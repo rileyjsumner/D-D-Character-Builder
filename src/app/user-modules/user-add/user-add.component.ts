@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../api.service';
+import { ApiService } from '../../api.service';
 import { FormBuilder, FormControl, FormGroupDirective, FormGroup, NgForm, Validators  } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 

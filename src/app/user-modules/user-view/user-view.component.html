@@ -18,7 +18,7 @@
       </dl>
     </mat-card-content>
     <mat-card-actions>
-      <a mat-flat-button color="primary" [routerLink]="['users/edit', user._id]"><mat-icon>edit</mat-icon></a>
+      <a mat-flat-button color="primary" [routerLink]="['/users/edit', user._id]"><mat-icon>edit</mat-icon></a>
       <a mat-flat-button color="warn" (click)="deleteUser(user._id)"><mat-icon>delete</mat-icon></a>
     </mat-card-actions>
   </mat-card>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ApiService} from '../api.service';
-import {User} from '../user';
+import {ApiService} from '../../api.service';
+import {User} from '../../user';
 
 @Component({
   selector: 'app-user-view',
@@ -15,10 +15,12 @@ export class UserViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }
 
   ngOnInit(): void {
+    console.log(this.route.snapshot);
     this.getUserDetails(this.route.snapshot.params.id);
   }
 
   getUserDetails(id: any) {
+    console.log(id);
     this.api.getUser(id)
       .subscribe((data: any) => {
         this.user = data;

@@ -6,10 +6,10 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { UsersComponent } from './users/users.component';
-import { UserAddComponent } from './user-add/user-add.component';
-import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserViewComponent } from './user-view/user-view.component';
+import { UsersComponent } from './user-modules/users/users.component';
+import { UserAddComponent } from './user-modules/user-add/user-add.component';
+import { UserEditComponent } from './user-modules/user-edit/user-edit.component';
+import { UserViewComponent } from './user-modules/user-view/user-view.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +21,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CharactersComponent } from './character-modules/characters/characters.component';
+import { CharacterAddComponent } from './character-modules/character-add/character-add.component';
+import { CharacterViewComponent } from './character-modules/character-view/character-view.component';
+import { CharacterEditComponent } from './character-modules/character-edit/character-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     UserAddComponent,
     UserEditComponent,
     UserViewComponent,
+    CharactersComponent,
+    CharacterAddComponent,
+    CharacterViewComponent,
+    CharacterEditComponent,
   ],
   imports: [
     BrowserModule,
