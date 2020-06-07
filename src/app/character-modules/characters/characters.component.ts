@@ -3,7 +3,7 @@ import { ApiService } from '../../api.service';
 import { Character } from '../../character';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss']
 })

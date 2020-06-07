@@ -9,22 +9,22 @@
   <mat-card class="example-card">
     <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
       <mat-form-field class="example-full-width">
-          <input matInput placeholder="Name" formControlName="name"
-                 [errorStateMatcher]="matcher">
+        <input matInput placeholder="Name" formControlName="name"
+               [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!userForm.get('name').valid && userForm.get('name').touched">Please enter Users Name</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-          <input matInput placeholder="email" formControlName="email"
-                 [errorStateMatcher]="matcher">
+        <input matInput placeholder="email" formControlName="email"
+               [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!userForm.get('email').valid && userForm.get('email').touched">Please enter email</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-          <input matInput placeholder="password" formControlName="password"
-                 [errorStateMatcher]="matcher">
+        <input matInput placeholder="password" formControlName="password"
+               [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!userForm.get('password').valid && userForm.get('password').touched">Please enter Password</span>
         </mat-error>

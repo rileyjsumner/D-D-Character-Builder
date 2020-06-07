@@ -15,11 +15,6 @@ router.get('/:id', getUser,(req, res) => {
   res.json(res.user);
 });
 
-router.get('/add', (req, res) => {
-  res.json({ message: "Why am I getting? "});
-  console.log("???");
-});
-
 router.post('/add', async (req, res) => {
   const user = new User({
     name: req.body.name,
