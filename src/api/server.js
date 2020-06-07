@@ -25,8 +25,11 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 6200;
 
-let router = require('./routes/users');
-app.use('/api/users', router);
+let userRouter = require('./routes/users');
+app.use('/api/users', userRouter);
+
+let characterRouter = require('./routes/characters');
+app.use('/api/characters', characterRouter);
 
 
 app.listen(PORT);
