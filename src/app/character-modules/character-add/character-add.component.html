@@ -21,15 +21,15 @@
         <div class="character-detail-header">
           <mat-form-field>
             <mat-label>Class:</mat-label>
-            <select matNativeControl formControlName="characterClass" [errorStateMatcher]="matcher">
-              <option *ngFor="let charClass of classes" [value]="charClass">{{charClass}}</option>
-            </select>
+            <mat-select formControlName="characterClass" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let charClass of classes" [value]="charClass">{{charClass}}</mat-option>
+            </mat-select>
             <mat-error>
               <span *ngIf="!characterForm.get('characterClass').valid && characterForm.get('characterClass').touched">Please enter Class</span>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <mat-label for="level">Level:</mat-label>
+            <mat-label>Level:</mat-label>
             <input id="level" (change)="onLevelChange()" matInput type="number" formControlName="level" [errorStateMatcher]="matcher">
             <mat-error>
               <span *ngIf="!characterForm.get('level').valid && characterForm.get('level').touched">Please enter Class</span>
@@ -44,18 +44,18 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Race:</mat-label>
-            <select matNativeControl formControlName="characterRace" [errorStateMatcher]="matcher">
-              <option *ngFor="let race of races" [value]="race">{{race}}</option>
-            </select>
+            <mat-select formControlName="characterRace" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let race of races" [value]="race">{{race}}</mat-option>
+            </mat-select>
             <mat-error>
               <span *ngIf="!characterForm.get('characterRace').valid && characterForm.get('characterRace').touched">Please enter Race</span>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Alignment:</mat-label>
-            <select matNativeControl formControlName="alignment" [errorStateMatcher]="matcher">
-              <option *ngFor="let align of alignments" [value]="align">{{align}}</option>
-            </select>
+            <mat-select formControlName="alignment" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let align of alignments" [value]="align">{{align}}</mat-option>
+            </mat-select>
             <mat-error>
               <span *ngIf="!characterForm.get('alignment').valid && characterForm.get('alignment').touched">Please enter Alignment</span>
             </mat-error>
@@ -75,61 +75,61 @@
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Strength</mat-label>
-                <input (change)="updateModifier('strength')" matInput type="number" formControlName="strengthAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('strength')" matInput type="number" formControlName="strengthAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="strengthAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('strength')" class="modifier" matInput type="number" formControlName="strengthAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Dexterity</mat-label>
-                <input (change)="updateModifier('dexterity')" matInput type="number" formControlName="dexterityAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('dexterity')" matInput type="number" formControlName="dexterityAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="dexterityAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('dexterity')" class="modifier" matInput type="number" formControlName="dexterityAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Constitution</mat-label>
-                <input (change)="updateModifier('constitution')" matInput type="number" formControlName="constitutionAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('constitution')" matInput type="number" formControlName="constitutionAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="constitutionAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('constitution')" class="modifier" matInput type="number" formControlName="constitutionAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Intelligence</mat-label>
-                <input (change)="updateModifier('intelligence')" matInput type="number" formControlName="intelligenceAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('intelligence')" matInput type="number" formControlName="intelligenceAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="intelligenceAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('intelligence')" class="modifier" matInput type="number" formControlName="intelligenceAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Wisdom</mat-label>
-                <input (change)="updateModifier('wisdom')" matInput type="number" formControlName="wisdomAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('wisdom')" matInput type="number" formControlName="wisdomAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="wisdomAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('wisdom')" class="modifier" matInput type="number" formControlName="wisdomAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
             <div class="ability-score">
               <mat-form-field>
                 <mat-label>Charisma</mat-label>
-                <input (change)="updateModifier('charisma')" matInput type="number" formControlName="charismaAS" [errorStateMatcher]="matcher"/>
+                <input (change)="updateScore('charisma')" matInput type="number" formControlName="charismaAS" [errorStateMatcher]="matcher"/>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input class="modifier" matInput type="number" formControlName="charismaAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow('charisma')" class="modifier" matInput type="number" formControlName="charismaAM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
           </div>
@@ -143,11 +143,35 @@
             <div class="proficiencyBonus">
               <mat-form-field>
                 <mat-label>Proficiency Bonus:</mat-label>
-                <input matInput type="number" formControlName="proficiencyBonus" [errorStateMatcher]="matcher">
+                <input (change)="updateProficiency()" matInput type="number" formControlName="proficiencyBonus" [errorStateMatcher]="matcher">
               </mat-form-field>
             </div>
             <div class="savingThrows">
-
+              <h2>Saving Throws</h2>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('strength')" formControlName="strengthSTP">Strength</mat-checkbox>
+                <input matInput type="number" formControlName="strengthST" [errorStateMatcher]="matcher">
+              </div>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('dexterity')" formControlName="dexteritySTP">Dexterity</mat-checkbox>
+                <input matInput type="number" formControlName="dexterityST" [errorStateMatcher]="matcher">
+              </div>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('constitution')" formControlName="constitutionSTP">Constitution</mat-checkbox>
+                <input matInput type="number" formControlName="constitutionST" [errorStateMatcher]="matcher">
+              </div>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('intelligence')" formControlName="intelligenceSTP">Intelligence</mat-checkbox>
+                <input matInput type="number" formControlName="intelligenceST" [errorStateMatcher]="matcher">
+              </div>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('wisdom')" formControlName="wisdomSTP">Wisdom</mat-checkbox>
+                <input matInput type="number" formControlName="wisdomST" [errorStateMatcher]="matcher">
+              </div>
+              <div class="throw">
+                <mat-checkbox (change)="updateSavingThrow('charisma')" formControlName="charismaSTP">Charisma</mat-checkbox>
+                <input matInput type="number" formControlName="charismaST" [errorStateMatcher]="matcher">
+              </div>
             </div>
           </div>
         </div>

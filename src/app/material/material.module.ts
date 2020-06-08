@@ -8,6 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatIconModule} from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const MaterialComponents = [
   BrowserAnimationsModule,
@@ -18,7 +19,8 @@ const MaterialComponents = [
   MatButtonModule,
   MatTableModule,
   MatSortModule,
-  MatIconModule
+  MatIconModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

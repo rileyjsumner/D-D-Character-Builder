@@ -23,6 +23,7 @@ export class CharacterAddComponent implements OnInit {
   races = ['Dwarf', 'Elf', 'Halfling', 'Human', 'Dragonborn', 'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling'];
   alignments = ['Lawful Good', 'Lawful Neutral', 'Lawful Evil', 'Neutral Good', 'True Neutral', 'Neutral Evil', 'Chaotic Good', 'Chaotic Neutral', 'Chaotic Evil'];
   isLoadingResults = false;
+  abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
   matcher = new CharacterErrorStateMatcher();
 
   constructor(private router: Router, private api: ApiService, private formBuilder: FormBuilder) { }
@@ -156,7 +157,7 @@ export class CharacterAddComponent implements OnInit {
       });
   }
 
-  updateModifier(ability) {
+  updateScore(ability) {
     let score, am;
     switch(ability) {
       case 'strength': {
@@ -199,12 +200,67 @@ export class CharacterAddComponent implements OnInit {
 
       }
     }
+    this.updateSavingThrow(ability);
+  }
+
+  updateSavingThrow(ability) {
+    let am, newBonus;
+    let proficiency = this.characterForm.value.proficiencyBonus;
+    switch(ability) {
+      case 'strength': {
+        am = this.characterForm.value.strengthAM;
+        newBonus = am + ((this.characterForm.value.strengthSTP) ? proficiency : 0);
+        this.characterForm.patchValue({strengthST: newBonus});
+        break;
+      }
+      case 'dexterity': {
+        am = this.characterForm.value.dexterityAM;
+        newBonus = am + ((this.characterForm.value.dexteritySTP) ? proficiency : 0);
+        this.characterForm.patchValue({dexterityST: newBonus});
+        break;
+      }
+      case 'constitution': {
+        am = this.characterForm.value.constitutionAM;
+        newBonus = am + ((this.characterForm.value.constitutionSTP) ? proficiency : 0);
+        this.characterForm.patchValue({constitutionST: newBonus});
+        break;
+      }
+      case 'intelligence': {
+        am = this.characterForm.value.intelligenceAM;
+        newBonus = am + ((this.characterForm.value.intelligenceSTP) ? proficiency : 0);
+        this.characterForm.patchValue({intelligenceST: newBonus});
+        break;
+      }
+      case 'wisdom': {
+        am = this.characterForm.value.wisdomAM;
+        newBonus = am + ((this.characterForm.value.wisdomSTP) ? proficiency : 0);
+        this.characterForm.patchValue({wisdomST: newBonus});
+        break;
+      }
+      case 'charisma': {
+        am = this.characterForm.value.charismaAM;
+        newBonus = am + ((this.characterForm.value.charismaSTP) ? proficiency : 0);
+        this.characterForm.patchValue({charismaST: newBonus});
+        break;
+      }
+      default: {
+
+      }
+    }
+  }
+
+  updateProficiency() {
+    for(let ability of this.abilities) {
+      this.updateSavingThrow(ability);
+    }
   }
 
   onLevelChange() {
     let lvl = this.characterForm.value.level;
     let newBonus = Math.floor((lvl+3) / 4) + 1;
     this.characterForm.patchValue({proficiencyBonus: newBonus});
+
+    this.updateProficiency();
   }
 
   static getAbilityModifier(score) {
