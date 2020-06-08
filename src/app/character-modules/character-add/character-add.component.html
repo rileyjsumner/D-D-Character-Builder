@@ -110,6 +110,22 @@
               </div>
             </div>
           </div>
+          <div class="character-stats">
+            <div class="quick-stats">
+              <mat-form-field>
+                <mat-label>Armor Class</mat-label>
+                <input matInput type="number" formControlName="armorClass" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Initiative</mat-label>
+                <input matInput type="number" formControlName="initiative" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Speed</mat-label>
+                <input matInput type="number" formControlName="speed" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+            </div>
+          </div>
         </div>
       </div>
 

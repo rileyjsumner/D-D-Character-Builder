@@ -202,6 +202,7 @@ export class CharacterAddComponent implements OnInit {
       }
     }
     this.updateSavingThrow(ability);
+    this.updateInitiative();
 
     for(let skill of this.skills) {
       this.updateSkill(skill)
@@ -368,6 +369,10 @@ export class CharacterAddComponent implements OnInit {
     this.characterForm.patchValue({proficiencyBonus: newBonus});
 
     this.updateProficiency();
+  }
+
+  updateInitiative() {
+    this.characterForm.patchValue({initiative: this.characterForm.value.DexterityAM});
   }
 
   static getAbilityModifier(score) {
