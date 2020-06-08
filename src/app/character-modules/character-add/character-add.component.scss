@@ -96,6 +96,8 @@
 
         .savingThrows {
 
+          margin: .5rem 0;
+
           .throw {
 
             display: flex;
@@ -107,6 +109,26 @@
             }
             input {
               width: 25%;
+            }
+          }
+        }
+
+        .skills {
+
+          margin: .5rem 0;
+
+          .skill {
+
+            display: flex;
+            flex-wrap: nowrap;
+            width: 100%;
+
+            mat-checkbox {
+              width: 50%;
+            }
+
+            input {
+              width: 15%;
             }
           }
         }

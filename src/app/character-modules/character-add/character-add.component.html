@@ -72,64 +72,14 @@
       <div class="character-details">
         <div class="abilities">
           <div class="ability-scores">
-            <div class="ability-score">
+            <div class="ability-score" *ngFor="let ability of abilities">
               <mat-form-field>
-                <mat-label>Strength</mat-label>
-                <input (change)="updateScore('strength')" matInput type="number" formControlName="strengthAS" [errorStateMatcher]="matcher"/>
+                <mat-label>{{ability}}</mat-label>
+                <input (change)="updateScore(ability)" matInput type="number" formControlName="{{ability}}AS" [errorStateMatcher]="matcher" />
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('strength')" class="modifier" matInput type="number" formControlName="strengthAM" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-            </div>
-            <div class="ability-score">
-              <mat-form-field>
-                <mat-label>Dexterity</mat-label>
-                <input (change)="updateScore('dexterity')" matInput type="number" formControlName="dexterityAS" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('dexterity')" class="modifier" matInput type="number" formControlName="dexterityAM" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-            </div>
-            <div class="ability-score">
-              <mat-form-field>
-                <mat-label>Constitution</mat-label>
-                <input (change)="updateScore('constitution')" matInput type="number" formControlName="constitutionAS" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('constitution')" class="modifier" matInput type="number" formControlName="constitutionAM" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-            </div>
-            <div class="ability-score">
-              <mat-form-field>
-                <mat-label>Intelligence</mat-label>
-                <input (change)="updateScore('intelligence')" matInput type="number" formControlName="intelligenceAS" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('intelligence')" class="modifier" matInput type="number" formControlName="intelligenceAM" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-            </div>
-            <div class="ability-score">
-              <mat-form-field>
-                <mat-label>Wisdom</mat-label>
-                <input (change)="updateScore('wisdom')" matInput type="number" formControlName="wisdomAS" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('wisdom')" class="modifier" matInput type="number" formControlName="wisdomAM" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-            </div>
-            <div class="ability-score">
-              <mat-form-field>
-                <mat-label>Charisma</mat-label>
-                <input (change)="updateScore('charisma')" matInput type="number" formControlName="charismaAS" [errorStateMatcher]="matcher"/>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Modifier</mat-label>
-                <input (change)="updateSavingThrow('charisma')" class="modifier" matInput type="number" formControlName="charismaAM" [errorStateMatcher]="matcher"/>
+                <input (change)="updateSavingThrow(ability)" class="modifier" matInput type="number" formControlName="{{ability}}AM" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
           </div>
@@ -147,30 +97,16 @@
               </mat-form-field>
             </div>
             <div class="savingThrows">
-              <h2>Saving Throws</h2>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('strength')" formControlName="strengthSTP">Strength</mat-checkbox>
-                <input matInput type="number" formControlName="strengthST" [errorStateMatcher]="matcher">
+              <div class="throw" *ngFor="let ability of abilities">
+                <mat-checkbox (change)="updateSavingThrow(ability)" formControlName="{{ability}}STP">{{ability}}</mat-checkbox>
+                <input matInput type="number" formControlName="{{ability}}ST" [errorStateMatcher]="matcher">
               </div>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('dexterity')" formControlName="dexteritySTP">Dexterity</mat-checkbox>
-                <input matInput type="number" formControlName="dexterityST" [errorStateMatcher]="matcher">
-              </div>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('constitution')" formControlName="constitutionSTP">Constitution</mat-checkbox>
-                <input matInput type="number" formControlName="constitutionST" [errorStateMatcher]="matcher">
-              </div>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('intelligence')" formControlName="intelligenceSTP">Intelligence</mat-checkbox>
-                <input matInput type="number" formControlName="intelligenceST" [errorStateMatcher]="matcher">
-              </div>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('wisdom')" formControlName="wisdomSTP">Wisdom</mat-checkbox>
-                <input matInput type="number" formControlName="wisdomST" [errorStateMatcher]="matcher">
-              </div>
-              <div class="throw">
-                <mat-checkbox (change)="updateSavingThrow('charisma')" formControlName="charismaSTP">Charisma</mat-checkbox>
-                <input matInput type="number" formControlName="charismaST" [errorStateMatcher]="matcher">
+            </div>
+            <div class="skills">
+              <div class="skill" *ngFor="let skill of skills">
+                <mat-checkbox (change)="updateSkill(skill.split(' ').join(''))" formControlName="{{skill.split(' ').join('')}}Prof">{{skill}}</mat-checkbox>
+                <input matInput type="number" formControlName="{{skill.split(' ').join('')}}Bonus" [errorStateMatcher]="matcher">
+                <input matInput type="text" formControlName="{{skill.split(' ').join('')}}Type" [errorStateMatcher]="matcher"/>
               </div>
             </div>
           </div>
