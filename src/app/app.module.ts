@@ -15,15 +15,8 @@ import { CharactersComponent } from './character-modules/characters/characters.c
 import { CharacterAddComponent } from './character-modules/character-add/character-add.component';
 import { CharacterViewComponent } from './character-modules/character-view/character-view.component';
 import { CharacterEditComponent } from './character-modules/character-edit/character-edit.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCardModule} from '@angular/material/card';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
-import {MatIconModule} from '@angular/material/icon';
+import { MaterialModule } from './material/material.module';
+
 
 @NgModule({
   declarations: [
@@ -43,15 +36,7 @@ import {MatIconModule} from '@angular/material/icon';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatSelectModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    MatIconModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
