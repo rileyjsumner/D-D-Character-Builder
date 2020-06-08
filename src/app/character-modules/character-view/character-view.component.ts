@@ -10,7 +10,7 @@ import {ApiService} from '../../api.service';
 })
 export class CharacterViewComponent implements OnInit {
 
-  character: Character = { _id: '', name: '', characterClass: '', characterRace: ''};
+  character: { characterRace: string; characterClass: string; name: string; _id: string } = { _id: '', name: '', characterClass: '', characterRace: ''};
   isLoadingResults = true;
 
   constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }

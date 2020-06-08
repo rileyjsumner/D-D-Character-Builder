@@ -1,21 +1,14 @@
 /* Structure */
-.example-container {
-  position: relative;
+.character-container {
   padding: 5px;
+  margin: 0 auto;
 }
 
-.example-form {
+.character-form {
   min-width: 150px;
   max-width: 500px;
-  width: 100%;
-}
-
-.example-full-width {
-  width: 100%;
-}
-
-.example-full-width:nth-last-child(0) {
-  margin-bottom: 10px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .button-row {
@@ -24,4 +17,84 @@
 
 .mat-flat-button {
   margin: 5px;
+}
+
+mat-label {
+  color: black;
+  width: 25%;
+  font-size: 1rem;
+  float: left;
+}
+
+select,
+input {
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+.character-card {
+
+  .header {
+
+    min-height: 150px;
+    .character-name-header {
+      width: 30%;
+      float: left;
+      border: 1px solid black;
+
+      mat-form-field {
+        width: 100%;
+      }
+    }
+    .character-detail-header {
+      padding: 1rem;
+      width: 60%;
+      float: right;
+      border: 1px solid black;
+      text-align: center;
+
+      mat-form-field {
+        width: 28%;
+        height: 2rem;
+        margin: 0 1rem;
+      }
+    }
+  }
+
+  .character-details {
+    .ability-scores {
+
+      display: flex;
+      flex-wrap: wrap;
+      width: 20%;
+
+      .ability-score {
+        border: 1px solid black;
+        flex-flow: wrap;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+
+        mat-form-field {
+          width: 100%;
+          display: flex;
+          flex-flow: wrap;
+          justify-content: center;
+
+          mat-label {
+            width: 50%;
+          }
+          input {
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  .button-row {
+    bottom: 0;
+    position: fixed;
+  }
+
 }

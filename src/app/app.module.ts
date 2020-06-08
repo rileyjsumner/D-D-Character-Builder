@@ -10,21 +10,20 @@ import { UsersComponent } from './user-modules/users/users.component';
 import { UserAddComponent } from './user-modules/user-add/user-add.component';
 import { UserEditComponent } from './user-modules/user-edit/user-edit.component';
 import { UserViewComponent } from './user-modules/user-view/user-view.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { CharactersComponent } from './character-modules/characters/characters.component';
 import { CharacterAddComponent } from './character-modules/character-add/character-add.component';
 import { CharacterViewComponent } from './character-modules/character-view/character-view.component';
 import { CharacterEditComponent } from './character-modules/character-edit/character-edit.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -44,16 +43,15 @@ import { CharacterEditComponent } from './character-modules/character-edit/chara
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NoopAnimationsModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatSortModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
     MatCardModule,
-    MatFormFieldModule
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
