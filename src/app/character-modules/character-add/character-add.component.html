@@ -1,0 +1,241 @@
+<div class="character-container mat-elevation-z8">
+  <div class="character-loading-shade"
+       *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/characters']"><mat-icon>list</mat-icon></a>
+  </div>
+  <mat-card class="character-card">
+    <form [formGroup]="characterForm" (ngSubmit)="onFormSubmit()">
+      <div class="header">
+        <div class="character-name-header">
+          <mat-form-field>
+            <mat-label>Character Name:</mat-label>
+              <input matInput formControlName="name" [errorStateMatcher]="matcher">
+            <mat-error>
+              <span *ngIf="!characterForm.get('name').valid && characterForm.get('name').touched">Please enter Users Name</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="character-detail-header">
+          <mat-form-field>
+            <mat-label>Class:</mat-label>
+            <mat-select formControlName="characterClass" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let charClass of classes" [value]="charClass">{{charClass}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!characterForm.get('characterClass').valid && characterForm.get('characterClass').touched">Please enter Class</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Level:</mat-label>
+            <input id="level" (change)="onLevelChange()" matInput type="number" formControlName="level" [errorStateMatcher]="matcher">
+            <mat-error>
+              <span *ngIf="!characterForm.get('level').valid && characterForm.get('level').touched">Please enter Class</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Background:</mat-label>
+            <input matInput formControlName="background" [errorStateMatcher]="matcher">
+            <mat-error>
+              <span *ngIf="!characterForm.get('background').valid && characterForm.get('background').touched">Please enter Background</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Race:</mat-label>
+            <mat-select formControlName="characterRace" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let race of races" [value]="race">{{race}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!characterForm.get('characterRace').valid && characterForm.get('characterRace').touched">Please enter Race</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Alignment:</mat-label>
+            <mat-select formControlName="alignment" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let align of alignments" [value]="align">{{align}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!characterForm.get('alignment').valid && characterForm.get('alignment').touched">Please enter Alignment</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>XP:</mat-label>
+            <input matInput type="number" formControlName="xp" [errorStateMatcher]="matcher">
+            <mat-error>
+              <span *ngIf="!characterForm.get('xp').valid && characterForm.get('xp').touched">Please enter XP</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="character-details">
+        <div class="abilities">
+          <div class="ability-scores">
+            <div class="ability-score" *ngFor="let ability of abilities">
+              <mat-form-field>
+                <mat-label>{{ability}}</mat-label>
+                <input (change)="updateScore(ability)" matInput type="number" formControlName="{{ability}}AS" [errorStateMatcher]="matcher" />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Modifier</mat-label>
+                <input (change)="updateSavingThrow(ability)" class="modifier" matInput type="number" formControlName="{{ability}}AM" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="ability-checks">
+            <div class="inspiration">
+              <mat-form-field>
+                <mat-label>Inspiration:</mat-label>
+                <input matInput type="number" formControlName="inspiration" [errorStateMatcher]="matcher">
+              </mat-form-field>
+            </div>
+            <div class="proficiencyBonus">
+              <mat-form-field>
+                <mat-label>Proficiency Bonus:</mat-label>
+                <input (change)="updateProficiency()" matInput type="number" formControlName="proficiencyBonus" [errorStateMatcher]="matcher">
+              </mat-form-field>
+            </div>
+            <div class="savingThrows">
+              <div class="throw" *ngFor="let ability of abilities">
+                <mat-checkbox (change)="updateSavingThrow(ability)" formControlName="{{ability}}STP">{{ability}}</mat-checkbox>
+                <input matInput type="number" formControlName="{{ability}}ST" [errorStateMatcher]="matcher">
+              </div>
+            </div>
+            <div class="skills">
+              <div class="skill" *ngFor="let skill of skills">
+                <mat-checkbox (change)="updateSkill(skill.split(' ').join(''))" formControlName="{{skill.split(' ').join('')}}Prof">{{skill}}</mat-checkbox>
+                <input matInput type="number" formControlName="{{skill.split(' ').join('')}}Bonus" [errorStateMatcher]="matcher">
+                <input matInput type="text" formControlName="{{skill.split(' ').join('')}}Type" [errorStateMatcher]="matcher"/>
+              </div>
+            </div>
+          </div>
+          <div class="character-stats">
+            <div class="quick-stats">
+              <mat-form-field>
+                <mat-label>Armor Class</mat-label>
+                <input matInput type="number" formControlName="armorClass" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Initiative</mat-label>
+                <input matInput type="number" formControlName="initiative" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Speed</mat-label>
+                <input matInput type="number" formControlName="speed" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+            </div>
+            <div class="health-stats">
+              <mat-form-field>
+                <mat-label>Hit Point Maximum</mat-label>
+                <input matInput type="number" formControlName="hitPointMaximum" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Current Hit Points</mat-label>
+                <input matInput type="number" formControlName="currentHitPoints" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Temporary Hit Points</mat-label>
+                <input matInput type="number" formControlName="temporaryHitPoints" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Hit Dice</mat-label>
+                <input matInput type="number" formControlName="hitDiceTotal" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <p>1d{{this.characterForm.value.hitDieSize}}</p>
+            </div>
+            <div class="wealth">
+              <div class="currency" *ngFor="let piece of currencies">
+                <mat-form-field>
+                  <mat-label>{{piece}}</mat-label>
+                  <input matInput type="number" formControlName="{{piece.split(' ').join('')}}" [errorStateMatcher]="matcher"/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="character-description">
+            <mat-form-field>
+              <mat-label>Age</mat-label>
+              <input matInput type="number" formControlName="age" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Height</mat-label>
+              <input matInput type="number" formControlName="height" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Weight</mat-label>
+              <input matInput type="number" formControlName="weight" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Eyes</mat-label>
+              <mat-select formControlName="eyes" [errorStateMatcher]="matcher">
+                <mat-option value="Blue">Blue</mat-option>
+                <mat-option value="Blue">Green</mat-option>
+                <mat-option value="Blue">Hazel</mat-option>
+                <mat-option value="Blue">Brown</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Skin</mat-label>
+              <mat-select formControlName="skin" [errorStateMatcher]="matcher">
+                <mat-option value="White">White</mat-option>
+                <mat-option value="Brown">Brown</mat-option>
+                <mat-option value="Green">Green</mat-option>
+                <mat-option value="Blue">Blue</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Hair</mat-label>
+              <mat-select formControlName="hair" [errorStateMatcher]="matcher">
+                <mat-option value="White">White</mat-option>
+                <mat-option value="Brown">Brown</mat-option>
+                <mat-option value="Green">Black</mat-option>
+                <mat-option value="Blue">Blond</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="size" [errorStateMatcher]="matcher">
+                <mat-option value="White">Tiny</mat-option>
+                <mat-option value="Brown">Small</mat-option>
+                <mat-option value="Green">Medium</mat-option>
+                <mat-option value="Blue">Large</mat-option>
+                <mat-option value="Blue">Huge</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Ideals</mat-label>
+              <textarea matInput formControlName="ideals"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Bonds</mat-label>
+              <textarea matInput formControlName="bonds"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flaws</mat-label>
+              <textarea matInput formControlName="flaws"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Features & Traits</mat-label>
+              <textarea matInput formControlName="featuresAndTraits"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Languages</mat-label>
+              <textarea matInput formControlName="languages"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="passivePerception">
+          <mat-form-field>
+            <mat-label>Passive Perception</mat-label>
+            <input matInput type="number" formControlName="passivePerception" [errorStateMatcher]="matcher" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!characterForm.valid" mat-flat-button color="primary"><mat-icon>save</mat-icon></button>
+      </div>
+    </form>
+  </mat-card>
+</div>

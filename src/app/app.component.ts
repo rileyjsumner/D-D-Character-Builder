@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, Injectable} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+
+@Injectable()
+export class AppComponent implements OnInit {
   title = 'DND';
+
+  ngOnInit(): void {
+  }
 }
