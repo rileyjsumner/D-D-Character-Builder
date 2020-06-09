@@ -125,7 +125,111 @@
                 <input matInput type="number" formControlName="speed" [errorStateMatcher]="matcher"/>
               </mat-form-field>
             </div>
+            <div class="health-stats">
+              <mat-form-field>
+                <mat-label>Hit Point Maximum</mat-label>
+                <input matInput type="number" formControlName="hitPointMaximum" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Current Hit Points</mat-label>
+                <input matInput type="number" formControlName="currentHitPoints" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Temporary Hit Points</mat-label>
+                <input matInput type="number" formControlName="temporaryHitPoints" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Hit Dice</mat-label>
+                <input matInput type="number" formControlName="hitDiceTotal" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <p>1d{{this.characterForm.value.hitDieSize}}</p>
+            </div>
+            <div class="wealth">
+              <div class="currency" *ngFor="let piece of currencies">
+                <mat-form-field>
+                  <mat-label>{{piece}}</mat-label>
+                  <input matInput type="number" formControlName="{{piece.split(' ').join('')}}" [errorStateMatcher]="matcher"/>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
+          <div class="character-description">
+            <mat-form-field>
+              <mat-label>Age</mat-label>
+              <input matInput type="number" formControlName="age" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Height</mat-label>
+              <input matInput type="number" formControlName="height" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Weight</mat-label>
+              <input matInput type="number" formControlName="weight" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Eyes</mat-label>
+              <mat-select formControlName="eyes" [errorStateMatcher]="matcher">
+                <mat-option value="Blue">Blue</mat-option>
+                <mat-option value="Blue">Green</mat-option>
+                <mat-option value="Blue">Hazel</mat-option>
+                <mat-option value="Blue">Brown</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Skin</mat-label>
+              <mat-select formControlName="skin" [errorStateMatcher]="matcher">
+                <mat-option value="White">White</mat-option>
+                <mat-option value="Brown">Brown</mat-option>
+                <mat-option value="Green">Green</mat-option>
+                <mat-option value="Blue">Blue</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Hair</mat-label>
+              <mat-select formControlName="hair" [errorStateMatcher]="matcher">
+                <mat-option value="White">White</mat-option>
+                <mat-option value="Brown">Brown</mat-option>
+                <mat-option value="Green">Black</mat-option>
+                <mat-option value="Blue">Blond</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="size" [errorStateMatcher]="matcher">
+                <mat-option value="White">Tiny</mat-option>
+                <mat-option value="Brown">Small</mat-option>
+                <mat-option value="Green">Medium</mat-option>
+                <mat-option value="Blue">Large</mat-option>
+                <mat-option value="Blue">Huge</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Ideals</mat-label>
+              <textarea matInput formControlName="ideals"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Bonds</mat-label>
+              <textarea matInput formControlName="bonds"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Flaws</mat-label>
+              <textarea matInput formControlName="flaws"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Features & Traits</mat-label>
+              <textarea matInput formControlName="featuresAndTraits"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Languages</mat-label>
+              <textarea matInput formControlName="languages"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="passivePerception">
+          <mat-form-field>
+            <mat-label>Passive Perception</mat-label>
+            <input matInput type="number" formControlName="passivePerception" [errorStateMatcher]="matcher" />
+          </mat-form-field>
         </div>
       </div>
 

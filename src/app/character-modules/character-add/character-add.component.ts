@@ -26,6 +26,7 @@ export class CharacterAddComponent implements OnInit {
   abilities = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
   skills = ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature', 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight Of Hand', 'Stealth', 'Survival'];
   matcher = new CharacterErrorStateMatcher();
+  currencies = ['Copper Pieces', 'Silver Pieces', 'Electrum Pieces', 'Gold Pieces', 'Platinum Pieces'];
 
   constructor(private router: Router, private api: ApiService, private formBuilder: FormBuilder) { }
 
@@ -141,7 +142,12 @@ export class CharacterAddComponent implements OnInit {
       'alignment' : [null, Validators.required],
       'languages' : [null, Validators.required],
       'passivePerception' : [10, Validators.required],
-      'inspiration' : [1, Validators.required]
+      'inspiration' : [0, Validators.required],
+      'CopperPieces' : [0],
+      'SilverPieces' : [0],
+      'ElectrumPieces' : [0],
+      'GoldPieces' : [0],
+      'PlatinumPieces' : [0]
     });
   }
 
@@ -207,6 +213,10 @@ export class CharacterAddComponent implements OnInit {
     for(let skill of this.skills) {
       this.updateSkill(skill)
     }
+
+    if(ability === "Wisdom") {
+      this.updatePassivePerception();
+    }
   }
 
   updateSavingThrow(ability) {
@@ -259,6 +269,7 @@ export class CharacterAddComponent implements OnInit {
     for(let ability of this.abilities) {
       this.updateSavingThrow(ability);
     }
+    this.updatePassivePerception();
   }
 
   updateSkill(skill) {
@@ -360,7 +371,7 @@ export class CharacterAddComponent implements OnInit {
 
       }
     }
-
+    this.updatePassivePerception();
   }
 
   onLevelChange() {
@@ -380,4 +391,8 @@ export class CharacterAddComponent implements OnInit {
     return Math.ceil((score - 10) / 2);
   }
 
+  updatePassivePerception() {
+    let newPerception = 10 + this.characterForm.value.WisdomAM + ((this.characterForm.value.PerceptionProf) ? this.characterForm.value.proficiencyBonus : 0);
+    this.characterForm.patchValue({passivePerception: newPerception});
+  }
 }
