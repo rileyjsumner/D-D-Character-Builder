@@ -162,11 +162,11 @@ export class Character {
     ideals: string;
     bonds: string;
     flaws: string;
-    featuresAndTraits: string[];
+    featuresAndTraits: string;
     background: string;
   };
   alignment: string;
-  languages: string[];
+  languages: string;
   passivePerception: number;
   inspiration: number;
 
