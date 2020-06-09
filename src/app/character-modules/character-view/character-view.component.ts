@@ -16,16 +16,13 @@ export class CharacterViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.route.snapshot);
     this.getCharacterDetails(this.route.snapshot.params.id);
   }
 
   getCharacterDetails(id: any) {
-    console.log(id);
     this.api.getCharacter(id)
       .subscribe((data: any) => {
         this.character = data;
-        console.log(this.character);
         this.isLoadingResults = false;
       });
   }

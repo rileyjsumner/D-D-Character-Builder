@@ -255,10 +255,6 @@ const characterSchema = new mongoose.Schema({
   },
   skills: {
     acrobatics: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -269,10 +265,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     animalHandling: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -283,10 +275,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     arcana: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -297,10 +285,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     athletics: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -311,10 +295,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     deception: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -325,10 +305,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     history: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -339,10 +315,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     insight: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -353,10 +325,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     investigation: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -367,10 +335,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     medicine: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -381,10 +345,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     nature: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -395,10 +355,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     perception: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -409,10 +365,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     performance: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -423,10 +375,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     persuasion: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -437,10 +385,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     religion: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -451,10 +395,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     sleightOfHand: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -465,10 +405,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     stealth: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
@@ -479,10 +415,6 @@ const characterSchema = new mongoose.Schema({
       }
     },
     survival: {
-      type: {
-        type: String,
-        required: true
-      },
       bonus: {
         type: Number,
         required: true
