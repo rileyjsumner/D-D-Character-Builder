@@ -31,6 +31,8 @@ export class CharacterAddComponent implements OnInit {
   skills = ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature', 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight Of Hand', 'Stealth', 'Survival'];
   matcher = new CharacterErrorStateMatcher();
   currencies = ['CP', 'SP', 'EP', 'GP', 'PP'];
+  languages = ['Common', 'Dwarvish', 'Elvish', 'Giant', 'Gnomish', 'Goblin', 'Halfling', 'Orc', 'Abyssal', 'Celestial', 'Deep Speech', 'Draconic', 'Infernal', 'Primordial', 'Sylvan', 'Undercommon'];
+  backgrounds = ['Acolyte', 'Charlatan', 'Criminal', 'Entertainer', 'Folk Hero', 'Guild Artisan', 'Hermit', 'Noble', 'Outlander', 'Sage', 'Sailor', 'Soldier', 'Urchin'];
   classBonus = {
     strength: 0,
     dexterity: 0,
@@ -51,6 +53,13 @@ export class CharacterAddComponent implements OnInit {
   classSkillTotal = 0;
   raceSkills = [];
   raceSkillTotal = 0;
+  heightDie = 0;
+  baseHeight = 0;
+  weightDie = 0;
+  weightDieCount = 0;
+  baseWeight = 0;
+  wealthDieCount = 0;
+  wealthDieMultiplier = 10;
 
   constructor(private router: Router, private api: ApiService, private formBuilder: FormBuilder) { }
 
@@ -173,8 +182,12 @@ export class CharacterAddComponent implements OnInit {
     });
     this.characterTraits = this.formBuilder.group({
       'age' : [1, Validators.required],
-      'height' : [1, Validators.required],
-      'weight' : [1, Validators.required],
+      'baseHeight': new FormControl({value: 0, disabled: true, required: true}),
+      'height' : [0],
+      'heightDie': [0],
+      'baseWeight': new FormControl({value: 0, disabled: true, required: true}),
+      'weightDie': [0],
+      'weight' : [0],
       'eyes' : [null],
       'skin' : [null],
       'hair' : [null],
@@ -420,7 +433,7 @@ export class CharacterAddComponent implements OnInit {
     this.updateProficiency();
   }
   updateInitiative() {
-    this.characterStats.patchValue({initiative: this.characterBasics.value.DexterityAM});
+    this.characterStats.patchValue({initiative: this.abilityDetails.value.DexterityAM});
   }
   static getAbilityModifier(score) {
     score -= score % 2;
@@ -645,6 +658,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterStats.patchValue({hitDieSize: 12});
         this.classSkills = ['Animal Handling', 'Athletics', 'Intimidation', 'Nature', 'Perception', 'Survival'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 2;
         break;
       }
       case 'Bard': {
@@ -653,6 +667,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = this.skills;
         this.classSkillTotal = 3;
+        this.wealthDieCount = 5;
         break;
       }
       case 'Cleric': {
@@ -661,6 +676,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = ['History', 'Insight', 'Medicine', 'Persuasion', 'Religion'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 5;
         break;
       }
       case 'Druid': {
@@ -669,6 +685,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = ['Arcana', 'Animal Handling', 'Insight', 'Medicine', 'Nature', 'Perception', 'Religion', 'Survival'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 2;
         break;
       }
       case 'Fighter': {
@@ -677,6 +694,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 10});
         this.classSkills = ['Acrobatics', 'Animal Handling', 'Athletics', 'History', 'Insight', 'Intimidation', 'Perception', 'Survival'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 5;
         break;
       }
       case 'Monk': {
@@ -685,6 +703,8 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = ['Acrobatics', 'Athletics', 'History', 'Insight', 'Religion', 'Stealth'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 5;
+        this.wealthDieMultiplier = 1;
         break;
       }
       case 'Paladin': {
@@ -693,6 +713,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 10});
         this.classSkills = ['Athletics', 'Insight', 'Intimidation', 'Medicine', 'Persuasion', 'Religion'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 5;
         break;
       }
       case 'Ranger': {
@@ -701,6 +722,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 10});
         this.classSkills = ['Animal Handling', 'Athletics', 'Insight', 'Investigation', 'Nature', 'Perception', 'Stealth', 'Survival'];
         this.classSkillTotal = 3;
+        this.wealthDieCount = 5;
         break;
       }
       case 'Rogue': {
@@ -709,14 +731,16 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = ['Acrobatics', 'Athletics', 'Deception', 'Insight', 'Intimidation', 'Investigation', 'Perception', 'Performance', 'Persuasion', 'Sleight of Hand', 'Stealth'];
         this.classSkillTotal = 4;
+        this.wealthDieCount = 4;
         break;
       }
       case 'Sorcerer': {
-        this.abilityDetails.patchValue({ConstitutionsSTP: true});
+        this.abilityDetails.patchValue({ConstitutionSTP: true});
         this.abilityDetails.patchValue({CharismaSTP: true});
         this.characterTraits.patchValue({hitDieSize: 6});
         this.classSkills = ['Arcana', 'Deception', 'Insight', 'Intimidation', 'Persuasion', 'Religion'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 3;
         break;
       }
       case 'Warlock': {
@@ -725,6 +749,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 8});
         this.classSkills = ['Arcana', 'Deception', 'History', 'Intimidation', 'Investigation', 'Nature', 'Religion'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 3;
         break;
       }
       case 'Wizard': {
@@ -733,6 +758,7 @@ export class CharacterAddComponent implements OnInit {
         this.characterTraits.patchValue({hitDieSize: 6});
         this.classSkills = ['Arcana', 'History', 'Insight', 'Investigation', 'Medicine', 'Religion'];
         this.classSkillTotal = 2;
+        this.wealthDieCount = 4;
       }
     }
 
@@ -758,11 +784,21 @@ export class CharacterAddComponent implements OnInit {
         switch(subRace) {
           case 'Hill Dwarf': {
             this.raceBonus.wisdom = 1;
+            this.heightDie = 4;
+            this.baseHeight = 44;
+            this.baseWeight = 115;
+            this.weightDie = 6;
+            this.weightDieCount = 2;
             // Increase hit point by 1 every level
             break;
           }
           case 'Mountain Dwarf': {
             this.raceBonus.strength = 2;
+            this.heightDie = 4;
+            this.baseHeight = 48;
+            this.baseWeight = 130;
+            this.weightDie = 6;
+            this.weightDieCount = 2;
             // light + medium armor proficiency
             break;
           }
@@ -772,21 +808,36 @@ export class CharacterAddComponent implements OnInit {
       case 'Elf': {
         this.raceBonus.dexterity = 2;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
-        this.characterTraits.patchValue({PerceptionProf: true});
+        this.characterStats.patchValue({speed: 30});
+        this.abilityDetails.patchValue({PerceptionProf: true});
 
         switch(subRace) {
           case 'High Elf': {
             this.raceBonus.intelligence = 1;
+            this.heightDie = 10;
+            this.baseHeight = 54;
+            this.baseWeight = 90;
+            this.weightDie = 4;
+            this.weightDieCount = 1;
             break;
           }
           case 'Wood Elf': {
             this.raceBonus.wisdom = 1;
+            this.heightDie = 10;
+            this.baseHeight = 54;
+            this.baseWeight = 100;
+            this.weightDie = 4;
+            this.weightDieCount = 1;
             this.characterBasics.patchValue({speed: 35});
             break;
           }
           case 'Dark Elf (Drow)': {
             this.raceBonus.charisma = 1;
+            this.heightDie = 6;
+            this.baseHeight = 53;
+            this.baseWeight = 75;
+            this.weightDie = 6;
+            this.weightDieCount = 1;
             break;
           }
         }
@@ -795,7 +846,13 @@ export class CharacterAddComponent implements OnInit {
       case 'Halfling': {
         this.raceBonus.dexterity = 2;
         this.characterTraits.patchValue({size: 'Small'});
-        this.characterTraits.patchValue({speed: 25});
+        this.characterStats.patchValue({speed: 25});
+        this.heightDie = 4;
+        this.baseHeight = 31;
+        this.baseWeight = 35;
+        this.weightDie = 1;
+        this.weightDieCount = 1;
+
         switch(subRace) {
           case 'Lightfoot': {
             this.raceBonus.charisma = 1;
@@ -816,20 +873,35 @@ export class CharacterAddComponent implements OnInit {
         this.raceBonus.wisdom = 1;
         this.raceBonus.charisma = 1;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
+        this.characterStats.patchValue({speed: 30});
+        this.heightDie = 10;
+        this.baseHeight = 56;
+        this.baseWeight = 110;
+        this.weightDie = 4;
+        this.weightDieCount = 2;
         break;
       }
       case 'Dragonborn': {
         this.raceBonus.strength = 2;
         this.raceBonus.charisma = 1;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
+        this.characterStats.patchValue({speed: 30});
+        this.heightDie = 8;
+        this.baseHeight = 66;
+        this.baseWeight = 175;
+        this.weightDie = 6;
+        this.weightDieCount = 2;
         break;
       }
       case 'Gnome': {
         this.raceBonus.intelligence = 2;
         this.characterTraits.patchValue({size: 'Small'});
-        this.characterTraits.patchValue({speed: 25});
+        this.characterStats.patchValue({speed: 25});
+        this.heightDie = 4;
+        this.baseHeight = 35;
+        this.baseWeight = 35;
+        this.weightDie = 1;
+        this.weightDieCount = 1;
 
         switch(subRace) {
           case 'Forest Gnome': {
@@ -846,9 +918,14 @@ export class CharacterAddComponent implements OnInit {
       case 'Half-Elf': {
         this.raceBonus.charisma = 2;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
+        this.characterStats.patchValue({speed: 30});
         this.raceSkills = this.skills;
         this.raceSkillTotal = 2;
+        this.heightDie = 8;
+        this.baseHeight = 57;
+        this.baseWeight = 110;
+        this.weightDie = 4;
+        this.weightDieCount = 2;
         // select 2 to increase by 1
         break;
       }
@@ -856,15 +933,25 @@ export class CharacterAddComponent implements OnInit {
         this.raceBonus.strength = 2;
         this.raceBonus.constitution = 1;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
+        this.characterStats.patchValue({speed: 30});
         this.abilityDetails.patchValue({IntimidationProf: true});
+        this.heightDie = 10;
+        this.baseHeight = 58;
+        this.baseWeight = 140;
+        this.weightDie = 6;
+        this.weightDieCount = 2;
         break;
       }
       case 'Tiefling': {
         this.raceBonus.intelligence = 1;
         this.raceBonus.charisma = 2;
         this.characterTraits.patchValue({size: 'Medium'});
-        this.characterTraits.patchValue({speed: 30});
+        this.characterStats.patchValue({speed: 30});
+        this.heightDie = 8;
+        this.baseHeight = 57;
+        this.baseWeight = 110;
+        this.weightDie = 4;
+        this.weightDieCount = 2;
         break;
       }
     }
@@ -874,7 +961,13 @@ export class CharacterAddComponent implements OnInit {
       this.updateScore(ability);
     }
 
+    this.characterTraits.patchValue({baseHeight:this.baseHeight});
+    this.characterTraits.patchValue({baseWeight:this.baseWeight});
+
     this.highlightSkills();
+  }
+  onBackgroundChange() {
+
   }
   highlightSkills() {
     for(let skill of this.classSkills) {
@@ -887,5 +980,10 @@ export class CharacterAddComponent implements OnInit {
   }
   removeSpaces(text) {
     return text.split(' ').join('');
+  }
+  updateHeightAndWeight() {
+    this.characterTraits.patchValue({height: this.characterTraits.value.baseHeight + this.characterTraits.value.heightDie});
+    this.characterTraits.patchValue({weight: this.characterTraits.value.baseWeight + (this.characterTraits.value.heightDie * this.characterTraits.value.weightDie)});
+
   }
 }

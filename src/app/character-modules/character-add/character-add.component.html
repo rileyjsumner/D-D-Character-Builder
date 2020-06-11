@@ -60,7 +60,9 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Background:</mat-label>
-              <input matInput formControlName="background" [errorStateMatcher]="matcher">
+              <mat-select formControlName="background" [errorStateMatcher]="matcher">
+                <mat-option *ngFor="let background of backgrounds" [value]="background">{{background}}</mat-option>
+              </mat-select>
               <mat-error>
                 <span *ngIf="!characterBasics.get('background').valid && characterBasics.get('background').touched">Please enter Background</span>
               </mat-error>
@@ -188,7 +190,7 @@
               <mat-label>Hit Dice</mat-label>
               <input matInput type="number" formControlName="hitDiceTotal" [errorStateMatcher]="matcher"/>
             </mat-form-field>
-            <p>1d{{this.characterBasics.value.hitDieSize}}</p>
+            <p>1d{{this.characterStats.value.hitDieSize}}</p>
           </div>
           <div class="wealth">
             <div class="currency" *ngFor="let piece of currencies">
@@ -207,19 +209,35 @@
       <mat-step [stepControl]="characterTraits">
         <form class="character-form" [formGroup]="characterTraits">
           <ng-template matStepLabel>Character Traits</ng-template>
-          <div class="character-description">
-            <mat-form-field>
-              <mat-label>Age</mat-label>
-              <input matInput type="number" formControlName="age" [errorStateMatcher]="matcher"/>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Height</mat-label>
-              <input matInput type="number" formControlName="height" [errorStateMatcher]="matcher"/>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Weight</mat-label>
-              <input matInput type="number" formControlName="weight" [errorStateMatcher]="matcher"/>
-            </mat-form-field>
+          <div class="physical-traits">
+            <div class="height">
+              <mat-form-field>
+                <mat-label>Base Height</mat-label>
+                <input (change)="updateHeightAndWeight()" matInput type="number" formControlName="baseHeight" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Roll 2d{{heightDie}}</mat-label>
+                <input (change)="updateHeightAndWeight()" matInput type="number" formControlName="heightDie" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Actual Height</mat-label>
+                <input matInput type="number" formControlName="height" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+            </div>
+            <div class="weight">
+              <mat-form-field>
+                <mat-label>Base Weight</mat-label>
+                <input (change)="updateHeightAndWeight()" matInput type="number" formControlName="baseWeight" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Roll {{weightDieCount}}d{{weightDie}}</mat-label>
+                <input (change)="updateHeightAndWeight()" matInput type="number" formControlName="weightDie" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Actual Weight</mat-label>
+                <input matInput type="number" formControlName="weight" [errorStateMatcher]="matcher"/>
+              </mat-form-field>
+            </div>
             <mat-form-field>
               <mat-label>Eyes</mat-label>
               <mat-select formControlName="eyes" [errorStateMatcher]="matcher">
@@ -247,16 +265,28 @@
                 <mat-option value="Blue">Blond</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+          <div class="physical-stats">
+            <mat-form-field>
+              <mat-label>Age</mat-label>
+              <input matInput type="number" formControlName="age" [errorStateMatcher]="matcher"/>
+            </mat-form-field>
             <mat-form-field>
               <mat-label>Size</mat-label>
               <mat-select formControlName="size" [errorStateMatcher]="matcher">
-                <mat-option value="White">Tiny</mat-option>
-                <mat-option value="Brown">Small</mat-option>
-                <mat-option value="Green">Medium</mat-option>
-                <mat-option value="Blue">Large</mat-option>
-                <mat-option value="Blue">Huge</mat-option>
+                <mat-option value="Tiny">Tiny</mat-option>
+                <mat-option value="Small">Small</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="Large">Large</mat-option>
+                <mat-option value="Huge">Huge</mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-form-field>
+              <mat-label>Languages</mat-label>
+              <textarea matInput formControlName="languages"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="personality-traits">
             <mat-form-field>
               <mat-label>Ideals</mat-label>
               <textarea matInput formControlName="ideals"></textarea>
@@ -272,10 +302,6 @@
             <mat-form-field>
               <mat-label>Features & Traits</mat-label>
               <textarea matInput formControlName="featuresAndTraits"></textarea>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Languages</mat-label>
-              <textarea matInput formControlName="languages"></textarea>
             </mat-form-field>
           </div>
           <div>

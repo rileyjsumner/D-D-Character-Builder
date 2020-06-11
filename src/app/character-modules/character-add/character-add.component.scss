@@ -176,6 +176,32 @@
       }
     }
   }
+
+  div.physical-traits,
+  div.physical-stats,
+  div.personality-traits {
+
+    width: 30%;
+
+    .height,
+    .weight {
+
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      mat-form-field {
+
+        width: 30%;
+      }
+    }
+
+    mat-form-field {
+
+      width: 100%;
+    }
+  }
+
 }
 
 
