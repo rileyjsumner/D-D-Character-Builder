@@ -24,8 +24,8 @@ router.post('/add', async (req, res) => {
     initiative: req.body.initiative,
     xp: req.body.xp,
     speed: req.body.speed,
-    subRace: "req.body.subRace",
-    subClass: "req.body.subClass",
+    subRace: req.body.subRace,
+    subClass: req.body.subClass,
     armorClass: req.body.armorClass,
     hitDiceTotal: req.body.hitDiceTotal,
     hitDieSize: req.body.hitDieSize,
@@ -33,12 +33,12 @@ router.post('/add', async (req, res) => {
     currentHitPoints: req.body.currentHitPoints,
     temporaryHitPoints: req.body.temporaryHitPoints,
     abilityScores: {
-      strength: req.body.StrengthAS,
-      dexterity: req.body.DexterityAS,
-      constitution: req.body.ConstitutionAS,
-      intelligence: req.body.IntelligenceAS,
-      wisdom: req.body.WisdomAS,
-      charisma: req.body.CharismaAS
+      strength: req.body.StrengthScore,
+      dexterity: req.body.DexterityScore,
+      constitution: req.body.ConstitutionScore,
+      intelligence: req.body.IntelligenceScore,
+      wisdom: req.body.WisdomScore,
+      charisma: req.body.CharismaScore
     },
     abilityModifiers: {
       strength: req.body.StrengthAM,
@@ -169,7 +169,8 @@ router.post('/add', async (req, res) => {
     alignment: req.body.alignment,
     languages: req.body.languages,
     passivePerception: req.body.passivePerception,
-    inspiration: req.body.inspiration
+    inspiration: req.body.inspiration,
+    proficiencies: req.body.proficiencies
   });
 
   try {

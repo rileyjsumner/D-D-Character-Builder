@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {Router} from '@angular/router';
 import {ApiService} from '../../api.service';
 import {ErrorStateMatcher} from '@angular/material/core';
+import * as $ from 'jquery';
 
 export class CharacterErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -18,7 +19,10 @@ export class CharacterErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CharacterAddComponent implements OnInit {
 
-  characterForm: FormGroup;
+  characterBasics: FormGroup;
+  abilityDetails: FormGroup;
+  characterStats: FormGroup;
+  characterTraits: FormGroup;
   classes = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard'];
   races = ['Dwarf', 'Elf', 'Halfling', 'Human', 'Dragonborn', 'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling'];
   alignments = ['Lawful Good', 'Lawful Neutral', 'Lawful Evil', 'Neutral Good', 'True Neutral', 'Neutral Evil', 'Chaotic Good', 'Chaotic Neutral', 'Chaotic Evil'];
@@ -26,33 +30,59 @@ export class CharacterAddComponent implements OnInit {
   abilities = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
   skills = ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature', 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight Of Hand', 'Stealth', 'Survival'];
   matcher = new CharacterErrorStateMatcher();
-  currencies = ['Copper Pieces', 'Silver Pieces', 'Electrum Pieces', 'Gold Pieces', 'Platinum Pieces'];
+  currencies = ['CP', 'SP', 'EP', 'GP', 'PP'];
+  classBonus = {
+    strength: 0,
+    dexterity: 0,
+    constitution: 0,
+    intelligence: 0,
+    wisdom: 0,
+    charisma: 0
+  };
+  raceBonus = {
+    strength: 0,
+    dexterity: 0,
+    constitution: 0,
+    intelligence: 0,
+    wisdom: 0,
+    charisma: 0
+  };
+  classSkills = [];
+  classSkillTotal = 0;
+  raceSkills = [];
+  raceSkillTotal = 0;
 
   constructor(private router: Router, private api: ApiService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.characterForm = this.formBuilder.group({
+    this.characterBasics = this.formBuilder.group({
       'name' : [null, Validators.required],
       'characterClass' : [null, Validators.required],
       'characterRace' : [null, Validators.required],
       'level' : [1, Validators.required],
-      'speed' : [20, Validators.required],
-      'initiative' : [0, Validators.required],
       'xp' : [0, Validators.required],
+      'background' : [null, Validators.required],
       'subRace' : [null],
-      'subClass' : [null],
-      'armorClass' : [10, Validators.required],
-      'hitDiceTotal' : [1, Validators.required],
-      'hitDieSize' : [8, Validators.required],
-      'hitPointMaximum' : [8, Validators.required],
-      'currentHitPoints' : [8, Validators.required],
-      'temporaryHitPoints' : [0, Validators.required],
+      'alignment' : [null, Validators.required],
+      'subClass' : [null]
+    });
+    this.abilityDetails = this.formBuilder.group({
+      'proficiencyBonus' : [2, Validators.required],
+      'passivePerception' : [10, Validators.required],
+      'inspiration' : [0, Validators.required],
+      'proficiencies': [null],
       'StrengthAS' : [10, Validators.required],
+      'StrengthScore' : new FormControl({value: 10, disabled: true}),
       'DexterityAS' : [10, Validators.required],
+      'DexterityScore' : new FormControl({value: 10, disabled: true}),
       'ConstitutionAS' : [10, Validators.required],
+      'ConstitutionScore' : new FormControl({value: 10, disabled: true}),
       'IntelligenceAS' : [10, Validators.required],
+      'IntelligenceScore' : new FormControl({value: 10, disabled: true}),
       'WisdomAS' : [10, Validators.required],
+      'WisdomScore' : new FormControl({value: 10, disabled: true}),
       'CharismaAS' : [10, Validators.required],
+      'CharismaScore' : new FormControl({value: 10, disabled: true}),
       'StrengthAM' : [0, Validators.required],
       'DexterityAM' : [0, Validators.required],
       'ConstitutionAM' : [0, Validators.required],
@@ -124,8 +154,24 @@ export class CharacterAddComponent implements OnInit {
       'StealthProf' : [false, Validators.required],
       'SurvivalType' : new FormControl({value: 'WIS', disabled: true}),
       'SurvivalBonus' : [0, Validators.required],
-      'SurvivalProf' : [false, Validators.required],
-      'proficiencyBonus' : [2, Validators.required],
+      'SurvivalProf' : [false, Validators.required]
+    });
+    this.characterStats = this.formBuilder.group({
+      'speed' : [20, Validators.required],
+      'initiative' : [0, Validators.required],
+      'armorClass' : [10, Validators.required],
+      'hitDiceTotal' : [1, Validators.required],
+      'hitDieSize' : [8, Validators.required],
+      'hitPointMaximum' : [8, Validators.required],
+      'currentHitPoints' : [8, Validators.required],
+      'temporaryHitPoints' : [0, Validators.required],
+      'CP' : [0],
+      'SP' : [0],
+      'EP' : [0],
+      'GP' : [0],
+      'PP' : [0]
+    });
+    this.characterTraits = this.formBuilder.group({
       'age' : [1, Validators.required],
       'height' : [1, Validators.required],
       'weight' : [1, Validators.required],
@@ -138,22 +184,13 @@ export class CharacterAddComponent implements OnInit {
       'bonds' : [null],
       'flaws' : [null],
       'featuresAndTraits' : [null],
-      'background' : [null, Validators.required],
-      'alignment' : [null, Validators.required],
-      'languages' : [null, Validators.required],
-      'passivePerception' : [10, Validators.required],
-      'inspiration' : [0, Validators.required],
-      'CopperPieces' : [0],
-      'SilverPieces' : [0],
-      'ElectrumPieces' : [0],
-      'GoldPieces' : [0],
-      'PlatinumPieces' : [0]
+      'languages' : [null, Validators.required]
     });
   }
 
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.api.addCharacter(this.characterForm.value)
+    this.api.addCharacter(this.characterBasics.value)
       .subscribe((res: any) => {
         const id = res._id;
         this.isLoadingResults = false;
@@ -163,44 +200,49 @@ export class CharacterAddComponent implements OnInit {
         this.isLoadingResults = false;
       });
   }
-
   updateScore(ability) {
     let score, am;
     switch(ability) {
       case 'Strength': {
-        score = this.characterForm.value.StrengthAS;
+        score = this.abilityDetails.value.StrengthAS + this.classBonus.strength + this.raceBonus.strength;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({StrengthAM: am});
+        this.abilityDetails.patchValue({StrengthScore: score});
+        this.abilityDetails.patchValue({StrengthAM: am});
         break;
       }
       case 'Dexterity': {
-        score = this.characterForm.value.DexterityAS;
+        score = this.abilityDetails.value.DexterityAS + this.classBonus.dexterity + this.raceBonus.dexterity;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({DexterityAM: am});
+        this.abilityDetails.patchValue({DexterityScore: score});
+        this.abilityDetails.patchValue({DexterityAM: am});
         break;
       }
       case 'Constitution': {
-        score = this.characterForm.value.ConstitutionAS;
+        score = this.abilityDetails.value.ConstitutionAS + this.classBonus.constitution + this.raceBonus.constitution;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({ConstitutionAM: am});
+        this.abilityDetails.patchValue({ConstitutionScore: score});
+        this.abilityDetails.patchValue({ConstitutionAM: am});
         break;
       }
       case 'Intelligence': {
-        score = this.characterForm.value.IntelligenceAS;
+        score = this.abilityDetails.value.IntelligenceAS + this.classBonus.intelligence + this.raceBonus.intelligence;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({IntelligenceAM: am});
+        this.abilityDetails.patchValue({IntelligenceScore: score});
+        this.abilityDetails.patchValue({IntelligenceAM: am});
         break;
       }
       case 'Wisdom': {
-        score = this.characterForm.value.WisdomAS;
+        score = this.abilityDetails.value.WisdomAS + this.classBonus.wisdom + this.raceBonus.wisdom;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({WisdomAM: am});
+        this.abilityDetails.patchValue({WisdomScore: score});
+        this.abilityDetails.patchValue({WisdomAM: am});
         break;
       }
       case 'Charisma': {
-        score = this.characterForm.value.CharismaAS;
+        score = this.abilityDetails.value.CharismaAS + this.classBonus.charisma + this.raceBonus.charisma;
         am = CharacterAddComponent.getAbilityModifier(score);
-        this.characterForm.patchValue({CharismaAM: am});
+        this.abilityDetails.patchValue({CharismaScore: score});
+        this.abilityDetails.patchValue({CharismaAM: am});
         break;
       }
       default: {
@@ -218,45 +260,44 @@ export class CharacterAddComponent implements OnInit {
       this.updatePassivePerception();
     }
   }
-
   updateSavingThrow(ability) {
     let am, newBonus;
-    let proficiency = this.characterForm.value.proficiencyBonus;
+    let proficiency = this.abilityDetails.value.proficiencyBonus;
     switch(ability) {
       case 'Strength': {
-        am = this.characterForm.value.StrengthAM;
-        newBonus = am + ((this.characterForm.value.StrengthSTP) ? proficiency : 0);
-        this.characterForm.patchValue({StrengthST: newBonus});
+        am = this.abilityDetails.value.StrengthAM;
+        newBonus = am + ((this.abilityDetails.value.StrengthSTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({StrengthST: newBonus});
         break;
       }
       case 'Dexterity': {
-        am = this.characterForm.value.DexterityAM;
-        newBonus = am + ((this.characterForm.value.DexteritySTP) ? proficiency : 0);
-        this.characterForm.patchValue({DexterityST: newBonus});
+        am = this.abilityDetails.value.DexterityAM;
+        newBonus = am + ((this.abilityDetails.value.DexteritySTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({DexterityST: newBonus});
         break;
       }
       case 'Constitution': {
-        am = this.characterForm.value.ConstitutionAM;
-        newBonus = am + ((this.characterForm.value.ConstitutionSTP) ? proficiency : 0);
-        this.characterForm.patchValue({ConstitutionST: newBonus});
+        am = this.abilityDetails.value.ConstitutionAM;
+        newBonus = am + ((this.abilityDetails.value.ConstitutionSTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({ConstitutionST: newBonus});
         break;
       }
       case 'Intelligence': {
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.IntelligenceSTP) ? proficiency : 0);
-        this.characterForm.patchValue({IntelligenceST: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.IntelligenceSTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({IntelligenceST: newBonus});
         break;
       }
       case 'Wisdom': {
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.WisdomSTP) ? proficiency : 0);
-        this.characterForm.patchValue({WisdomST: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.WisdomSTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({WisdomST: newBonus});
         break;
       }
       case 'Charisma': {
-        am = this.characterForm.value.CharismaAM;
-        newBonus = am + ((this.characterForm.value.CharismaSTP) ? proficiency : 0);
-        this.characterForm.patchValue({CharismaST: newBonus});
+        am = this.abilityDetails.value.CharismaAM;
+        newBonus = am + ((this.abilityDetails.value.CharismaSTP) ? proficiency : 0);
+        this.abilityDetails.patchValue({CharismaST: newBonus});
         break;
       }
       default: {
@@ -264,108 +305,106 @@ export class CharacterAddComponent implements OnInit {
       }
     }
   }
-
   updateProficiency() {
     for(let ability of this.abilities) {
       this.updateSavingThrow(ability);
     }
     this.updatePassivePerception();
   }
-
   updateSkill(skill) {
     let am, newBonus;
-    let proficiency = this.characterForm.value.proficiencyBonus;
+    let proficiency = this.abilityDetails.value.proficiencyBonus;
 
     switch(skill) {
       case 'Acrobatics':
-        am = this.characterForm.value.DexterityAM;
-        newBonus = am + ((this.characterForm.value.AcrobaticsProf) ? proficiency : 0);
-        this.characterForm.patchValue({AcrobaticsBonus: newBonus});
+        am = this.abilityDetails.value.DexterityAM;
+        newBonus = am + ((this.abilityDetails.value.AcrobaticsProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({AcrobaticsBonus: newBonus});
         break;
       case 'AnimalHandling':
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.AnimalHandlingProf) ? proficiency : 0);
-        this.characterForm.patchValue({AnimalHandlingBonus: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.AnimalHandlingProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({AnimalHandlingBonus: newBonus});
         break;
       case 'Arcana':
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.ArcanaProf) ? proficiency : 0);
-        this.characterForm.patchValue({ArcanaBonus: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.ArcanaProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({ArcanaBonus: newBonus});
         break;
       case 'Athletics':
-        am = this.characterForm.value.StrengthAM;
-        newBonus = am + ((this.characterForm.value.AthleticsProf) ? proficiency : 0);
-        this.characterForm.patchValue({AthleticsBonus: newBonus});
+        am = this.abilityDetails.value.StrengthAM;
+        newBonus = am + ((this.abilityDetails.value.AthleticsProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({AthleticsBonus: newBonus});
         break;
       case 'Deception':
-        am = this.characterForm.value.CharismaAM;
-        newBonus = am + ((this.characterForm.value.DeceptionProf) ? proficiency : 0);
-        this.characterForm.patchValue({DeceptionBonus: newBonus});
+        am = this.abilityDetails.value.CharismaAM;
+        newBonus = am + ((this.abilityDetails.value.DeceptionProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({DeceptionBonus: newBonus});
         break;
       case 'History':
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.HistoryProf) ? proficiency : 0);
-        this.characterForm.patchValue({HistoryBonus: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.HistoryProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({HistoryBonus: newBonus});
         break;
       case 'Insight':
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.InsightProf) ? proficiency : 0);
-        this.characterForm.patchValue({InsightBonus: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.InsightProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({InsightBonus: newBonus});
         break;
       case 'Intimidation':
-        am = this.characterForm.value.CharismaAM;
-        newBonus = am + ((this.characterForm.value.IntimidationProf) ? proficiency : 0);
-        this.characterForm.patchValue({IntimidationBonus: newBonus});
+        am = this.abilityDetails.value.CharismaAM;
+        newBonus = am + ((this.abilityDetails.value.IntimidationProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({IntimidationBonus: newBonus});
         break;
       case 'Investigation':
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.InvestigationProf) ? proficiency : 0);
-        this.characterForm.patchValue({InvestigationBonus: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.InvestigationProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({InvestigationBonus: newBonus});
         break;
       case 'Medicine':
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.MedicineProf) ? proficiency : 0);
-        this.characterForm.patchValue({MedicineBonus: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.MedicineProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({MedicineBonus: newBonus});
         break;
       case 'Nature':
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.NatureProf) ? proficiency : 0);
-        this.characterForm.patchValue({NatureBonus: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.NatureProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({NatureBonus: newBonus});
         break;
       case 'Perception':
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.PerceptionProf) ? proficiency : 0);
-        this.characterForm.patchValue({PerceptionBonus: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.PerceptionProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({PerceptionBonus: newBonus});
         break;
       case 'Performance':
-        am = this.characterForm.value.CharismaAM;
-        newBonus = am + ((this.characterForm.value.PerformanceProf) ? proficiency : 0);
-        this.characterForm.patchValue({PerformanceBonus: newBonus});
+        am = this.abilityDetails.value.CharismaAM;
+        newBonus = am + ((this.abilityDetails.value.PerformanceProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({PerformanceBonus: newBonus});
         break;
       case 'Persuasion':
-        am = this.characterForm.value.CharismaAM;
-        newBonus = am + ((this.characterForm.value.PersuasionProf) ? proficiency : 0);
-        this.characterForm.patchValue({PersuasionBonus: newBonus});
+        am = this.abilityDetails.value.CharismaAM;
+        newBonus = am + ((this.abilityDetails.value.PersuasionProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({PersuasionBonus: newBonus});
         break;
       case 'Religion':
-        am = this.characterForm.value.IntelligenceAM;
-        newBonus = am + ((this.characterForm.value.ReligionProf) ? proficiency : 0);
-        this.characterForm.patchValue({ReligionBonus: newBonus});
+        am = this.abilityDetails.value.IntelligenceAM;
+        newBonus = am + ((this.abilityDetails.value.ReligionProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({ReligionBonus: newBonus});
         break;
       case 'SleightOfHand':
-        am = this.characterForm.value.DexterityAM;
-        newBonus = am + ((this.characterForm.value.SleightOfHandProf) ? proficiency : 0);
-        this.characterForm.patchValue({SleightOfHandBonus: newBonus});
+        am = this.abilityDetails.value.DexterityAM;
+        newBonus = am + ((this.abilityDetails.value.SleightOfHandProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({SleightOfHandBonus: newBonus});
         break;
       case 'Stealth':
-        am = this.characterForm.value.DexterityAM;
-        newBonus = am + ((this.characterForm.value.StealthProf) ? proficiency : 0);
-        this.characterForm.patchValue({StealthBonus: newBonus});
+        am = this.abilityDetails.value.DexterityAM;
+        newBonus = am + ((this.abilityDetails.value.StealthProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({StealthBonus: newBonus});
         break;
       case 'Survival':
-        am = this.characterForm.value.WisdomAM;
-        newBonus = am + ((this.characterForm.value.SurvivalProf) ? proficiency : 0);
-        this.characterForm.patchValue({SurvivalBonus: newBonus});
+        am = this.abilityDetails.value.WisdomAM;
+        newBonus = am + ((this.abilityDetails.value.SurvivalProf) ? proficiency : 0);
+        this.abilityDetails.patchValue({SurvivalBonus: newBonus});
         break;
       default: {
 
@@ -373,26 +412,480 @@ export class CharacterAddComponent implements OnInit {
     }
     this.updatePassivePerception();
   }
-
   onLevelChange() {
-    let lvl = this.characterForm.value.level;
+    let lvl = this.characterBasics.value.level;
     let newBonus = Math.floor((lvl+3) / 4) + 1;
-    this.characterForm.patchValue({proficiencyBonus: newBonus});
+    this.abilityDetails.patchValue({proficiencyBonus: newBonus});
 
     this.updateProficiency();
   }
-
   updateInitiative() {
-    this.characterForm.patchValue({initiative: this.characterForm.value.DexterityAM});
+    this.characterStats.patchValue({initiative: this.characterBasics.value.DexterityAM});
   }
-
   static getAbilityModifier(score) {
     score -= score % 2;
     return Math.ceil((score - 10) / 2);
   }
-
   updatePassivePerception() {
-    let newPerception = 10 + this.characterForm.value.WisdomAM + ((this.characterForm.value.PerceptionProf) ? this.characterForm.value.proficiencyBonus : 0);
-    this.characterForm.patchValue({passivePerception: newPerception});
+    let newPerception = 10 + this.abilityDetails.value.WisdomAM + ((this.characterBasics.value.PerceptionProf) ? this.characterBasics.value.proficiencyBonus : 0);
+    this.abilityDetails.patchValue({passivePerception: newPerception});
+  }
+  getSubClass() {
+    let subClasses;
+    let characterClass = this.characterBasics.value.characterClass;
+
+    switch(characterClass) {
+      case 'Barbarian': {
+        subClasses = ['Path of the Berserker', 'Path of the Totem Warrior'];
+        break;
+      }
+      case 'Bard': {
+        subClasses = ['College of Lore', 'College of Valor'];
+        break;
+      }
+      case 'Cleric': {
+        subClasses = ['Knowledge', 'Life', 'Light', 'Nature', 'Tempest', 'Trickery', 'War'];
+        break;
+      }
+      case 'Druid': {
+        subClasses = ['Circle of the Land', 'Circle of the Moon'];
+        break;
+      }
+      case 'Fighter': {
+        subClasses = ['Champion', 'Battle Master', 'Eldritch Knight'];
+        break;
+      }
+      case 'Monk': {
+        subClasses = ['Way of the Open Hand', 'Way of Shadow', 'Way of the Four Elements'];
+        break;
+      }
+      case 'Paladin': {
+        subClasses = ['Oath of Devotion', 'Oath of the Ancients', 'Oath of Vengeance'];
+        break;
+      }
+      case 'Ranger': {
+        subClasses = ['Hunter', 'Beast Master'];
+        break;
+      }
+      case 'Rogue': {
+        subClasses = ['Thief', 'Assassin', 'Arcane Trickster'];
+        break;
+      }
+      case 'Sorcerer': {
+        subClasses = ['Draconic Bloodline', 'Wild Magic'];
+        break;
+      }
+      case 'Warlock': {
+        subClasses = ['Archfey', 'Fiend', 'Great Old One'];
+        break;
+      }
+      case 'Wizard': {
+        subClasses = ['School of Abjuration', 'School of Conjuration', 'School of Divination', 'School of Enchantment', 'School of Evocation', 'School of Illusion', 'School of Necromancy', 'School of Transmutation'];
+        break;
+      }
+    }
+    return subClasses;
+  }
+  getSubClassLabel() {
+    let characterClass = this.characterBasics.value.characterClass;
+    let label;
+    switch(characterClass) {
+      case 'Barbarian': {
+        label = 'Path';
+        break;
+      }
+      case 'Bard': {
+        label = 'College';
+        break;
+      }
+      case 'Cleric': {
+        label = 'Domain';
+        break;
+      }
+      case 'Druid': {
+        label = 'Circle';
+        break;
+      }
+      case 'Fighter': {
+        label = 'Martial Archetype';
+        break;
+      }
+      case 'Monk': {
+        label = 'Monastic Traditions';
+        break;
+      }
+      case 'Paladin': {
+        label = 'Sacred Oath';
+        break;
+      }
+      case 'Ranger': {
+        label = 'Ranger Archetype';
+        break;
+      }
+      case 'Rogue': {
+        label = 'Roguish Archetype';
+        break;
+      }
+      case 'Sorcerer': {
+        label = 'Sorcerous Origins';
+        break;
+      }
+      case 'Warlock': {
+        label = 'Otherworldy Patron';
+        break;
+      }
+      case 'Wizard': {
+        label = 'Arcane Tradition';
+        break;
+      }
+      default: {
+        label = 'Sub Class';
+      }
+    }
+    return label;
+  }
+  getSubRaces() {
+    let race = this.characterBasics.value.characterRace;
+    let subRaces = [];
+    switch(race) {
+      case 'Dwarf': {
+        subRaces = ['Hill Dwarf', 'Mountain Dwarf'];
+        break;
+      }
+      case 'Elf': {
+        subRaces = ['High Elf', 'Wood Elf', 'Dark Elf (Drow)'];
+        break;
+      }
+      case 'Halfling': {
+        subRaces = ['Lightfoot', 'Stout'];
+        break;
+      }
+      case 'Human': {
+        subRaces = ['Calishite', 'Chondathan', 'Damaran', 'Illuskan', 'Mulan', 'Rashemi', 'Shou', 'Tethyrian', 'Turami'];
+        break;
+      }
+      case 'Dragonborn': {
+        subRaces = ['Black', 'Blue', 'Brass', 'Bronze', 'Copper', 'Gold', 'Green', 'Red', 'Silver', 'White'];
+        break;
+      }
+      case 'Gnome': {
+        subRaces = ['Forest Gnome', 'Rock Gnome'];
+        break;
+      }
+      case 'Half-Elf': {
+        subRaces = ['Diplomat', 'Wanderer'];
+        break;
+      }
+      case 'Half-Orc': {
+        subRaces = [];
+        break;
+      }
+      case 'Tiefling': {
+        subRaces = ['Infernal', 'Virtue'];
+        break;
+      }
+    }
+    return subRaces;
+  }
+  getSubRaceLabel() {
+
+    let race = this.characterBasics.value.characterRace;
+    let label;
+
+    switch(race) {
+      case 'Dwarf':
+      case 'Elf':
+      case 'Halfling': {
+        label = 'Sub Race';
+        break;
+      }
+      case 'Human': {
+        label = 'Ethnicity';
+        break;
+      }
+      case 'Dragonborn': {
+        label = 'Draconic Ancestry';
+        break;
+      }
+      case 'Gnome': {
+        label = 'Sub Race';
+        break;
+      }
+      case 'Half-Elf': {
+        label = 'Trait';
+        break;
+      }
+      case 'Tiefling': {
+        label = 'Tiefling Origin';
+        break;
+      }
+      default: {
+        label = 'Sub Race';
+        break;
+      }
+    }
+    return label;
+  }
+  onClassChange() {
+    let characterClass = this.characterBasics.value.characterClass;
+    let subClass = this.characterBasics.value.subClass;
+    let proficiencies = this.abilityDetails.value.proficiencies;
+    let languages = this.characterTraits.value.languages;
+    this.abilityDetails.patchValue({StrengthSTP: false});
+    this.abilityDetails.patchValue({DexteritySTP: false});
+    this.abilityDetails.patchValue({ConstitutionSTP: false});
+    this.abilityDetails.patchValue({IntelligenceSTP: false});
+    this.abilityDetails.patchValue({WisdomSTP: false});
+    this.abilityDetails.patchValue({CharismaSTP: false});
+
+    switch(characterClass) {
+      case 'Barbarian': {
+        this.abilityDetails.patchValue({StrengthSTP: true});
+        this.abilityDetails.patchValue({ConstitutionSTP: true});
+        this.characterStats.patchValue({hitDieSize: 12});
+        this.classSkills = ['Animal Handling', 'Athletics', 'Intimidation', 'Nature', 'Perception', 'Survival'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Bard': {
+        this.abilityDetails.patchValue({DexteritySTP: true});
+        this.abilityDetails.patchValue({CharismaSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = this.skills;
+        this.classSkillTotal = 3;
+        break;
+      }
+      case 'Cleric': {
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.abilityDetails.patchValue({CharismaSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = ['History', 'Insight', 'Medicine', 'Persuasion', 'Religion'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Druid': {
+        this.abilityDetails.patchValue({IntelligenceSTP: true});
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = ['Arcana', 'Animal Handling', 'Insight', 'Medicine', 'Nature', 'Perception', 'Religion', 'Survival'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Fighter': {
+        this.abilityDetails.patchValue({StrengthSTP: true});
+        this.abilityDetails.patchValue({ConstitutionSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 10});
+        this.classSkills = ['Acrobatics', 'Animal Handling', 'Athletics', 'History', 'Insight', 'Intimidation', 'Perception', 'Survival'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Monk': {
+        this.abilityDetails.patchValue({StrengthSTP: true});
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = ['Acrobatics', 'Athletics', 'History', 'Insight', 'Religion', 'Stealth'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Paladin': {
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.abilityDetails.patchValue({CharismaSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 10});
+        this.classSkills = ['Athletics', 'Insight', 'Intimidation', 'Medicine', 'Persuasion', 'Religion'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Ranger': {
+        this.abilityDetails.patchValue({StrengthSTP: true});
+        this.abilityDetails.patchValue({DexteritySTP: true});
+        this.characterTraits.patchValue({hitDieSize: 10});
+        this.classSkills = ['Animal Handling', 'Athletics', 'Insight', 'Investigation', 'Nature', 'Perception', 'Stealth', 'Survival'];
+        this.classSkillTotal = 3;
+        break;
+      }
+      case 'Rogue': {
+        this.abilityDetails.patchValue({DexteritySTP: true});
+        this.abilityDetails.patchValue({IntelligenceSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = ['Acrobatics', 'Athletics', 'Deception', 'Insight', 'Intimidation', 'Investigation', 'Perception', 'Performance', 'Persuasion', 'Sleight of Hand', 'Stealth'];
+        this.classSkillTotal = 4;
+        break;
+      }
+      case 'Sorcerer': {
+        this.abilityDetails.patchValue({ConstitutionsSTP: true});
+        this.abilityDetails.patchValue({CharismaSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 6});
+        this.classSkills = ['Arcana', 'Deception', 'Insight', 'Intimidation', 'Persuasion', 'Religion'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Warlock': {
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.abilityDetails.patchValue({CharismaSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 8});
+        this.classSkills = ['Arcana', 'Deception', 'History', 'Intimidation', 'Investigation', 'Nature', 'Religion'];
+        this.classSkillTotal = 2;
+        break;
+      }
+      case 'Wizard': {
+        this.abilityDetails.patchValue({IntelligenceSTP: true});
+        this.abilityDetails.patchValue({WisdomSTP: true});
+        this.characterTraits.patchValue({hitDieSize: 6});
+        this.classSkills = ['Arcana', 'History', 'Insight', 'Investigation', 'Medicine', 'Religion'];
+        this.classSkillTotal = 2;
+      }
+    }
+
+    for(let ability of this.abilities) {
+      console.log(ability);
+      this.updateScore(ability);
+    }
+
+    this.highlightSkills();
+  }
+  onRaceChange() {
+    let race = this.characterBasics.value.characterRace;
+    let subRace = this.characterBasics.value.subRace;
+    let proficiencies = this.abilityDetails.value.proficiencies;
+    let languages = this.characterTraits.value.languages;
+
+    switch(race) {
+      case 'Dwarf': {
+        this.raceBonus.constitution = 2;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 25});
+
+        switch(subRace) {
+          case 'Hill Dwarf': {
+            this.raceBonus.wisdom = 1;
+            // Increase hit point by 1 every level
+            break;
+          }
+          case 'Mountain Dwarf': {
+            this.raceBonus.strength = 2;
+            // light + medium armor proficiency
+            break;
+          }
+        }
+        break;
+      }
+      case 'Elf': {
+        this.raceBonus.dexterity = 2;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        this.characterTraits.patchValue({PerceptionProf: true});
+
+        switch(subRace) {
+          case 'High Elf': {
+            this.raceBonus.intelligence = 1;
+            break;
+          }
+          case 'Wood Elf': {
+            this.raceBonus.wisdom = 1;
+            this.characterBasics.patchValue({speed: 35});
+            break;
+          }
+          case 'Dark Elf (Drow)': {
+            this.raceBonus.charisma = 1;
+            break;
+          }
+        }
+        break;
+      }
+      case 'Halfling': {
+        this.raceBonus.dexterity = 2;
+        this.characterTraits.patchValue({size: 'Small'});
+        this.characterTraits.patchValue({speed: 25});
+        switch(subRace) {
+          case 'Lightfoot': {
+            this.raceBonus.charisma = 1;
+            break;
+          }
+          case 'Stout': {
+            this.raceBonus.constitution = 1;
+            break;
+          }
+        }
+        break;
+      }
+      case 'Human': {
+        this.raceBonus.strength = 1;
+        this.raceBonus.dexterity = 1;
+        this.raceBonus.constitution = 1;
+        this.raceBonus.intelligence = 1;
+        this.raceBonus.wisdom = 1;
+        this.raceBonus.charisma = 1;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        break;
+      }
+      case 'Dragonborn': {
+        this.raceBonus.strength = 2;
+        this.raceBonus.charisma = 1;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        break;
+      }
+      case 'Gnome': {
+        this.raceBonus.intelligence = 2;
+        this.characterTraits.patchValue({size: 'Small'});
+        this.characterTraits.patchValue({speed: 25});
+
+        switch(subRace) {
+          case 'Forest Gnome': {
+            this.raceBonus.dexterity = 1;
+            break;
+          }
+          case 'Rock Gnome': {
+            this.raceBonus.constitution = 1;
+            break;
+          }
+        }
+        break;
+      }
+      case 'Half-Elf': {
+        this.raceBonus.charisma = 2;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        this.raceSkills = this.skills;
+        this.raceSkillTotal = 2;
+        // select 2 to increase by 1
+        break;
+      }
+      case 'Half-Orc': {
+        this.raceBonus.strength = 2;
+        this.raceBonus.constitution = 1;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        this.abilityDetails.patchValue({IntimidationProf: true});
+        break;
+      }
+      case 'Tiefling': {
+        this.raceBonus.intelligence = 1;
+        this.raceBonus.charisma = 2;
+        this.characterTraits.patchValue({size: 'Medium'});
+        this.characterTraits.patchValue({speed: 30});
+        break;
+      }
+    }
+
+    for(let ability of this.abilities) {
+      console.log(ability);
+      this.updateScore(ability);
+    }
+
+    this.highlightSkills();
+  }
+  highlightSkills() {
+    for(let skill of this.classSkills) {
+      $("#"+skill).addClass("highlight");
+    }
+
+    for(let skill of this.raceSkills) {
+      $("#"+skill).addClass("highlight");
+    }
+  }
+  removeSpaces(text) {
+    return text.split(' ').join('');
   }
 }

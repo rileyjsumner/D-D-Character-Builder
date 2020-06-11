@@ -424,6 +424,10 @@ const characterSchema = new mongoose.Schema({
         required: true
       }
     }
+  },
+  proficiencies: {
+    type: String,
+    required: false
   }
 });
 

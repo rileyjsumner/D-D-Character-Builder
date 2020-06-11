@@ -4,13 +4,6 @@
   margin: 0 auto;
 }
 
-.character-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 80%;
-  margin: 0 auto;
-}
-
 .button-row {
   margin: 10px 0;
 }
@@ -19,157 +12,170 @@
   margin: 5px;
 }
 
+.highlight {
+  color: #e82765;
+}
 
-.character-card {
+.character-form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-  .header {
+  div {
+    margin: 0 1rem;
+  }
 
-    min-height: 150px;
-    .character-name-header {
-      width: 30%;
-      float: left;
-      border: 1px solid black;
+  div.character-name {
 
-      mat-form-field {
-        width: 100%;
-        height: 3rem;
-      }
-    }
-    .character-detail-header {
-      padding: 1rem;
-      width: 60%;
-      float: right;
-      border: 1px solid black;
-      text-align: center;
+    width: 35%;
 
-      mat-form-field {
-        width: 28%;
-        height: 3rem;
-        margin: 0 1rem;
-      }
+    mat-form-field {
+      width: 80%;
     }
   }
 
-  .character-details {
+  div.character-detail {
 
-    .abilities {
-      display: flex;
-      flex-wrap: nowrap;
-      width: 100%;
-      justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 60%;
 
-      .ability-scores {
+    mat-form-field {
+      width: 30%;
+    }
+  }
 
-        display: flex;
-        flex-wrap: wrap;
-        width: 20%;
+  div.ability-scores {
 
-        margin: 0 .5rem;
+    width: 30%;
 
-        .ability-score {
-          flex-flow: wrap;
-          display: flex;
-          width: 100%;
-          justify-content: center;
+    .ability-field {
 
-          mat-form-field {
-            width: 100%;
-            display: flex;
-            flex-flow: wrap;
-            justify-content: center;
-
-            mat-label {
-              width: 50%;
-            }
-            input {
-              width: 50%;
-            }
-          }
-        }
-      }
-
-      .ability-checks {
-        display: flex;
-        flex-wrap: wrap;
-        width: 20%;
-
-        margin: 0 .5rem;
-
-        .savingThrows {
-
-          margin: .5rem 0;
-
-          .throw {
-
-            display: flex;
-            flex-wrap: nowrap;
-            width: 100%;
-
-            mat-checkbox {
-              width: 75%;
-            }
-            input {
-              width: 25%;
-            }
-          }
-        }
-
-        .skills {
-
-          margin: .5rem 0;
-
-          .skill {
-
-            display: flex;
-            flex-wrap: nowrap;
-            width: 100%;
-
-            mat-checkbox {
-              width: 50%;
-            }
-
-            input {
-              width: 15%;
-            }
-          }
-        }
-      }
-
-      .character-stats {
+      &.ability-score {
 
         display: flex;
         flex-wrap: wrap;
-        width: 30%;
-
-        .quick-stats {
-
-          display: flex;
-          flex-wrap: nowrap;
-          width: 100%;
-
-          mat-form-field {
-
-            width: 30%;
-            justify-content: space-between;
-            margin: 0 .25rem;
-          }
-        }
-      }
-
-      .character-description {
-
-        width: 25%;
+        justify-content: space-around;
+        width: 100%;
 
         mat-form-field {
-          width: 100%;
+
+          width: 30%;
         }
       }
     }
-
   }
 
-  .button-row {
-    bottom: 0;
+  div.saving-throws {
+
+    width: 20%;
+
+    h2.stats {
+
+      margin-top: 1rem;
+    }
+
+    .throw {
+
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+      mat-checkbox,
+      input {
+        width: 50%;
+      }
+    }
+
+    .ability-field {
+
+      margin: 0.5rem 0 0 0;
+      width: 100%;
+
+      mat-form-field {
+
+        width: 100%;
+      }
+    }
   }
 
+  div.skills {
+
+    width: 40%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h2,
+    p {
+      width: 100%;
+      margin: .25rem 0;
+    }
+
+    .skill {
+
+      width: 40%;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+
+      mat-checkbox {
+        width: 60%;
+      }
+
+      input {
+        text-align: right;
+        width: 20%;
+      }
+    }
+  }
+
+  div.quick-stats {
+
+    width: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    mat-form-field {
+      width: 30%;
+    }
+  }
+
+  div.health-stats {
+
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    mat-form-field,
+    p {
+
+      width: 24%;
+    }
+  }
+
+  div.wealth {
+
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .currency {
+      width: 10%;
+
+      mat-form-field {
+
+        width: 100%;
+      }
+    }
+  }
 }
+
+
