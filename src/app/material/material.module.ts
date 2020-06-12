@@ -10,6 +10,10 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatListModule} from '@angular/material/list';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 const MaterialComponents = [
   BrowserAnimationsModule,
@@ -22,7 +26,11 @@ const MaterialComponents = [
   MatSortModule,
   MatIconModule,
   MatCheckboxModule,
-  MatStepperModule
+  MatStepperModule,
+  MatSliderModule,
+  MatProgressBarModule,
+  MatListModule,
+  MatSlideToggleModule
 ];
 
 @NgModule({

@@ -177,11 +177,9 @@
     }
   }
 
-  div.physical-traits,
-  div.physical-stats,
-  div.personality-traits {
+  div.physical-traits {
 
-    width: 30%;
+    width: 20%;
 
     .height,
     .weight {
@@ -189,6 +187,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      margin: 0;
 
       mat-form-field {
 
@@ -201,6 +200,48 @@
       width: 100%;
     }
   }
+  div.physical-stats {
+
+    width: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  div.personality-traits {
+
+    width: 50%;
+
+    div.personality-trait {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .custom-toggle {
+        width: 10%;
+        text-align: right;
+      }
+      .toggle-roll {
+        width: 10%;
+      }
+      mat-form-field {
+        width: 70%;
+      }
+
+    }
+
+    mat-form-field {
+
+      width: 100%;
+    }
+  }
+
+
 
 }
 

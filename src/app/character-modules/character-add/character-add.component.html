@@ -60,7 +60,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Background:</mat-label>
-              <mat-select formControlName="background" [errorStateMatcher]="matcher">
+              <mat-select (selectionChange)="onBackgroundChange()" formControlName="background" [errorStateMatcher]="matcher">
                 <mat-option *ngFor="let background of backgrounds" [value]="background">{{background}}</mat-option>
               </mat-select>
               <mat-error>
@@ -267,10 +267,10 @@
             </mat-form-field>
           </div>
           <div class="physical-stats">
-            <mat-form-field>
+            <div>
               <mat-label>Age</mat-label>
-              <input matInput type="number" formControlName="age" [errorStateMatcher]="matcher"/>
-            </mat-form-field>
+              <mat-slider formControlName="age" min="1" max="{{ageMax}}" step="1" thumbLabel></mat-slider>
+            </div>
             <mat-form-field>
               <mat-label>Size</mat-label>
               <mat-select formControlName="size" [errorStateMatcher]="matcher">
@@ -283,26 +283,65 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Languages</mat-label>
-              <textarea matInput formControlName="languages"></textarea>
+              <mat-select formControlName="languages" [errorStateMatcher]="matcher" multiple>
+                <mat-option *ngFor="let language of languages" [value]="language">{{language}}</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="personality-traits">
-            <mat-form-field>
-              <mat-label>Ideals</mat-label>
-              <textarea matInput formControlName="ideals"></textarea>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Bonds</mat-label>
-              <textarea matInput formControlName="bonds"></textarea>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Flaws</mat-label>
-              <textarea matInput formControlName="flaws"></textarea>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Features & Traits</mat-label>
-              <textarea matInput formControlName="featuresAndTraits"></textarea>
-            </mat-form-field>
+            <div class="personality-trait">
+              <div class="custom-toggle">
+                <mat-slide-toggle formControlName="idealsCustom"></mat-slide-toggle>
+              </div>
+              <mat-form-field class="toggle-roll">
+                <mat-label>Roll 1d6</mat-label>
+                <input matInput (change)="onTraitRoll('ideals')" type="number" formControlName="idealsRoll"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Ideals</mat-label>
+                <input matInput type="text" formControlName="ideals"/>
+              </mat-form-field>
+            </div>
+            <div class="personality-trait">
+              <div class="custom-toggle">
+                <mat-slide-toggle formControlName="bondsCustom"></mat-slide-toggle>
+              </div>
+              <mat-form-field class="toggle-roll">
+                <mat-label>Roll 1d6</mat-label>
+                <input matInput type="number" formControlName="bondsRoll"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Bonds</mat-label>
+                <input matInput type="text" formControlName="bonds"/>
+              </mat-form-field>
+            </div>
+            <div class="personality-trait">
+              <div class="custom-toggle">
+                <mat-slide-toggle formControlName="flawsCustom"></mat-slide-toggle>
+              </div>
+              <mat-form-field class="toggle-roll">
+                <mat-label>Roll 1d6</mat-label>
+                <input matInput type="number" formControlName="flawsRoll"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Flaws</mat-label>
+                <input matInput type="text" formControlName="flaws"/>
+              </mat-form-field>
+            </div>
+            <div class="personality-trait">
+              <div class="custom-toggle">
+                <mat-slide-toggle formControlName="featuresAndTraitsCustom"></mat-slide-toggle>
+              </div>
+              <mat-form-field class="toggle-roll">
+                <mat-label>Roll 1d6</mat-label>
+                <input matInput type="number" formControlName="featuresAndTraitsRoll"/>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Features & Traits</mat-label>
+                <input matInput type="text" formControlName="featuresAndTraits"/>
+              </mat-form-field>
+            </div>
+
           </div>
           <div>
             <button mat-button matStepperPrevious>Back</button>
