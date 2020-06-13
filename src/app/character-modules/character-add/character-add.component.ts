@@ -33,6 +33,7 @@ export class CharacterAddComponent implements OnInit {
   currencies = ['CP', 'SP', 'EP', 'GP', 'PP'];
   languages = ['Common', 'Dwarvish', 'Elvish', 'Giant', 'Gnomish', 'Goblin', 'Halfling', 'Orc', 'Abyssal', 'Celestial', 'Deep Speech', 'Draconic', 'Infernal', 'Primordial', 'Sylvan', 'Undercommon'];
   backgrounds = ['Acolyte', 'Charlatan', 'Criminal', 'Entertainer', 'Folk Hero', 'Guild Artisan', 'Hermit', 'Noble', 'Outlander', 'Sage', 'Sailor', 'Soldier', 'Urchin'];
+  personalityItems = ['Personality Traits', 'Ideals', 'Bonds', 'Flaws'];
   classBonus = {
     strength: 0,
     dexterity: 0,
@@ -197,17 +198,18 @@ export class CharacterAddComponent implements OnInit {
       'skin' : [null],
       'hair' : [null],
       'size' : [null],
-      'personalityTraits' : [null],
-      'personalityTraitsCustom': [false],
-      'ideals' : [null],
-      'idealsCustom': [false],
-      'idealsRoll': [0],
-      'bonds' : [null],
-      'bondsCustom': [false],
-      'bondsRoll': [0],
-      'flaws' : [null],
-      'flawsCustom': [false],
-      'flawsRoll': [0],
+      'PersonalityTraits' : [null],
+      'PersonalityTraitsCustom': [false],
+      'PersonalityTraitsRoll' : [0],
+      'Ideals' : [null],
+      'IdealsCustom': [false],
+      'IdealsRoll': [0],
+      'Bonds' : [null],
+      'BondsCustom': [false],
+      'BondsRoll': [0],
+      'Flaws' : [null],
+      'FlawsCustom': [false],
+      'FlawsRoll': [0],
       'featuresAndTraits' : [null],
       'featuresAndTraitsCustom': [false],
       'featuresAndTraitsRoll': [0],
@@ -1416,25 +1418,29 @@ export class CharacterAddComponent implements OnInit {
 
   }
   onTraitRoll(trait) {
-
-    let roll = this.characterTraits.value.idealsRoll;
-    console.log(trait, roll);
+    let roll;
+    console.log(trait);
 
     switch(trait) {
-      case 'ideals': {
-        this.characterTraits.patchValue({ideals: this.idealRolls[roll]});
+      case 'Ideals': {
+        roll = this.characterTraits.value.IdealsRoll;
+        console.log(roll, this.idealRolls[roll]);
+        this.characterTraits.patchValue({Ideals: this.idealRolls[roll]});
         break;
       }
-      case 'bonds': {
-        this.characterTraits.patchValue({bonds: this.bondRolls[roll]});
+      case 'Bonds': {
+        roll = this.characterTraits.value.BondsRoll;
+        this.characterTraits.patchValue({Bonds: this.bondRolls[roll]});
         break;
       }
-      case 'flaws': {
-        this.characterTraits.patchValue({flaws: this.flawRolls[roll]});
+      case 'Flaws': {
+        roll = this.characterTraits.value.FlawsRoll;
+        this.characterTraits.patchValue({Flaws: this.flawRolls[roll]});
         break;
       }
-      case 'personalityTraits': {
-        this.characterTraits.patchValue({personalityTraits: this.traitRolls[roll]});
+      case 'Personality Traits': {
+        roll = this.characterTraits.value.PersonalityTraitsRoll;
+        this.characterTraits.patchValue({PersonalityTraits: this.traitRolls[roll]});
         break;
       }
     }
