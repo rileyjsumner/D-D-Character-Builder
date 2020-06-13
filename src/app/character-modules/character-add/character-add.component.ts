@@ -54,6 +54,7 @@ export class CharacterAddComponent implements OnInit {
   classSkillTotal = 0;
   raceSkills = [];
   raceSkillTotal = 0;
+  backgroundSkills = [];
   heightDie = 0;
   baseHeight = 0;
   weightDie = 0;
@@ -337,6 +338,9 @@ export class CharacterAddComponent implements OnInit {
   updateProficiency() {
     for(let ability of this.abilities) {
       this.updateSavingThrow(ability);
+    }
+    for(let skill of this.skills) {
+      this.updateSkill(skill);
     }
     this.updatePassivePerception();
   }
@@ -668,6 +672,7 @@ export class CharacterAddComponent implements OnInit {
         this.classSkills = ['Animal Handling', 'Athletics', 'Intimidation', 'Nature', 'Perception', 'Survival'];
         this.classSkillTotal = 2;
         this.wealthDieCount = 2;
+        this.characterStats.patchValue({hitDieSize: 12});
         break;
       }
       case 'Bard': {
@@ -945,10 +950,23 @@ export class CharacterAddComponent implements OnInit {
   onBackgroundChange() {
     let background = this.characterBasics.value.background;
 
+    for(let skill of this.skills) {
+      let skillProf = this.removeSpaces(skill) + 'Prof';
+      if(this.abilityDetails.controls[skillProf].value) {
+        console.log($("#" + skill));
+        if($("#"+skill).hasClass("background-highlight")) {
+          $("#"+skill).removeClass("background-highlight");
+          this.updateSkillProficiency(skill, false);
+        }
+      }
+    }
+    console.log('TEST: ', this.abilityDetails.controls['StealthProf'].value);
+
     switch(background) {
 
       case 'Acolyte': {
         this.abilityDetails.patchValue({InsightProf: true, ReligionProf: true});
+        this.backgroundSkills = ['Insight', 'Religion'];
         this.traitRolls = ['',
             'I idolize a particular hero of my faith, and constantly refer to that person\'s deeds and example.',
             'I can find common ground between the fiercest enemies, empathizing with them and always working towards peace.',
@@ -984,6 +1002,7 @@ export class CharacterAddComponent implements OnInit {
       case 'Charlatan': {
         // favorite scheme
         this.abilityDetails.patchValue({DeceptionProf: true, SleightOfHandProf: true});
+        this.backgroundSkills = ['Deception', 'SleightOfHand'];
         this.traitRolls = ['',
             'I fall in and out of love easily, and am always pursuing someone.',
             'I have a joke for every occasion, especially occasions where humor is inappropriate',
@@ -1018,6 +1037,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Criminal': {
         this.abilityDetails.patchValue({DeceptionProf: true, StealthProf: true});
+        this.backgroundSkills = ['Deception', 'Stealth'];
         // Criminal specialty
         this.traitRolls = ['',
             'I always have a plan for what to do when things go wrong.',
@@ -1053,6 +1073,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Entertainer': {
         this.abilityDetails.patchValue({AcrobaticsProf: true, PerformanceProf: true});
+        this.backgroundSkills = ['Acrobatics', 'Performance'];
         // Entertainer Routine
         this.traitRolls = ['',
             'I know a story relevant to almost every situation.',
@@ -1088,6 +1109,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Folk Hero': {
         this.abilityDetails.patchValue({AnimalHandlingProf: true, SurvivalProf: true});
+        this.backgroundSkills = ['AnimalHandling', 'Survival'];
         // Defining event
         this.traitRolls = ['',
             'I judge people by their actions, not their words.',
@@ -1123,6 +1145,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Guild Artisan': {
         this.abilityDetails.patchValue({InsightProf: true, PersuasionProf: true});
+        this.backgroundSkills = ['Insight', 'Persuasion'];
         // Guild Business
         this.traitRolls = ['',
             'I believe that anything worth doing is worth doing right. I can\'t help it — I\'m a perfectionist.',
@@ -1158,6 +1181,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Hermit': {
         this.abilityDetails.patchValue({MedicineProf: true, ReligionProf: true});
+        this.backgroundSkills = ['Medicine', 'Religion'];
         // life of seclusion
         this.traitRolls = ['',
             'I\'ve been isolated for so long that I rarely speak, preferring gestures and the occasional grunt.',
@@ -1193,6 +1217,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Noble': {
         this.abilityDetails.patchValue({HistoryProf: true, PersuasionProf: true});
+        this.backgroundSkills = ['History', 'Persuasion'];
         this.traitRolls = ['',
             'My eloquent flattery makes everyone I talk to feel like the most wonderful and important person in the world.',
             'The common folk love me for my kindness and generosity.',
@@ -1227,6 +1252,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Outlander': {
         this.abilityDetails.patchValue({AthleticsProf: true, SurvivalProf: true});
+        this.backgroundSkills = ['Athletics', 'Survival'];
         // Origin
         this.traitRolls = ['',
             'I\'m driven by a wanderlust that led me away from home.',
@@ -1262,6 +1288,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Sage': {
         this.abilityDetails.patchValue({ArcanaProf: true, HistoryProf: true});
+        this.backgroundSkills = ['Arcana', 'History'];
         // Specialty
         this.traitRolls = ['',
             'I use polysyllabic words that convey the impression of great erudition.',
@@ -1297,6 +1324,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Sailor': {
         this.abilityDetails.patchValue({AthleticsProf: true, PerceptionProf: true});
+        this.backgroundSkills = ['Athletics', 'Perception'];
         this.traitRolls = ['',
             'My friends know they can rely on me, no matter what.',
             'I work hard so that I can play hard when the work is done.',
@@ -1331,6 +1359,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Soldier': {
         this.abilityDetails.patchValue({AthleticsProf: true, IntimidationProf: true});
+        this.backgroundSkills = ['Athletics', 'Intimidation'];
         // Specialty
         this.traitRolls = ['',
             'I\'m always polite and respectful.',
@@ -1366,6 +1395,7 @@ export class CharacterAddComponent implements OnInit {
       }
       case 'Urchin': {
         this.abilityDetails.patchValue({SleightOfHandProf: true, StealthProf: true});
+        this.backgroundSkills = ['SleightOfHand', 'Stealth'];
         this.traitRolls = ['',
             'I hide scraps of food and trinkets away in my pockets.',
             'I ask a lot of questions.',
@@ -1398,15 +1428,22 @@ export class CharacterAddComponent implements OnInit {
             'People who can\'t take care of themselves get what they deserve.']
         break;
       }
+
     }
+
+    this.highlightSkills();
   }
   highlightSkills() {
     for(let skill of this.classSkills) {
-      $("#"+skill).addClass("highlight");
+      $("#"+skill).addClass("class-highlight");
     }
 
     for(let skill of this.raceSkills) {
-      $("#"+skill).addClass("highlight");
+      $("#"+skill).addClass("race-highlight");
+    }
+
+    for(let skill of this.backgroundSkills) {
+      $("#"+skill).addClass("background-highlight");
     }
   }
   removeSpaces(text) {
@@ -1442,6 +1479,67 @@ export class CharacterAddComponent implements OnInit {
         roll = this.characterTraits.value.PersonalityTraitsRoll;
         this.characterTraits.patchValue({PersonalityTraits: this.traitRolls[roll]});
         break;
+      }
+    }
+  }
+  updateSkillProficiency(skill, value) {
+    switch(skill) {
+      case 'Acrobatics':
+        this.abilityDetails.patchValue({AcrobaticsProf: value});
+        break;
+      case 'AnimalHandling':
+        this.abilityDetails.patchValue({AnimalHandlingProf: value});
+        break;
+      case 'Arcana':
+        this.abilityDetails.patchValue({ArcanaProf: value});
+        break;
+      case 'Athletics':
+        this.abilityDetails.patchValue({AthleticsProf: value});
+        break;
+      case 'Deception':
+        this.abilityDetails.patchValue({DeceptionProf: value});
+        break;
+      case 'History':
+        this.abilityDetails.patchValue({HistoryProf: value});
+        break;
+      case 'Insight':
+        this.abilityDetails.patchValue({InsightProf: value});
+        break;
+      case 'Intimidation':
+        this.abilityDetails.patchValue({IntimidationProf: value});
+        break;
+      case 'Investigation':
+        this.abilityDetails.patchValue({InvestigationProf: value});
+        break;
+      case 'Medicine':
+        this.abilityDetails.patchValue({MedicineProf: value});
+        break;
+      case 'Nature':
+        this.abilityDetails.patchValue({NatureProf: value});
+        break;
+      case 'Perception':
+        this.abilityDetails.patchValue({PerceptionProf: value});
+        break;
+      case 'Performance':
+        this.abilityDetails.patchValue({PerformanceProf: value});
+        break;
+      case 'Persuasion':
+        this.abilityDetails.patchValue({PersuasionProf: value});
+        break;
+      case 'Religion':
+        this.abilityDetails.patchValue({ReligionProf: value});
+        break;
+      case 'SleightOfHand':
+        this.abilityDetails.patchValue({SleightOfHandProf: value});
+        break;
+      case 'Stealth':
+        this.abilityDetails.patchValue({StealthProf: value});
+        break;
+      case 'Survival':
+        this.abilityDetails.patchValue({SurvivalProf: value});
+        break;
+      default: {
+
       }
     }
   }
