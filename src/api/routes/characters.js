@@ -12,12 +12,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', getCharacter,(req, res) => {
-  console.log(res.character);
   res.json(res.character);
 });
 
 router.post('/add', async (req, res) => {
-  console.log(req.body);
   const character = new Character({
     name: req.body.name,
     characterClass: req.body.characterClass,
@@ -25,6 +23,7 @@ router.post('/add', async (req, res) => {
     level: req.body.level,
     initiative: req.body.initiative,
     xp: req.body.xp,
+    speed: req.body.speed,
     subRace: req.body.subRace,
     subClass: req.body.subClass,
     armorClass: req.body.armorClass,
@@ -34,12 +33,12 @@ router.post('/add', async (req, res) => {
     currentHitPoints: req.body.currentHitPoints,
     temporaryHitPoints: req.body.temporaryHitPoints,
     abilityScores: {
-      strength: req.body.StrengthAS,
-      dexterity: req.body.DexterityAS,
-      constitution: req.body.ConstitutionAS,
-      intelligence: req.body.IntelligenceAS,
-      wisdom: req.body.WisdomAS,
-      charisma: req.body.CharismaAS
+      strength: req.body.StrengthScore,
+      dexterity: req.body.DexterityScore,
+      constitution: req.body.ConstitutionScore,
+      intelligence: req.body.IntelligenceScore,
+      wisdom: req.body.WisdomScore,
+      charisma: req.body.CharismaScore
     },
     abilityModifiers: {
       strength: req.body.StrengthAM,
@@ -66,90 +65,81 @@ router.post('/add', async (req, res) => {
         bonus: req.body.IntelligenceST,
         proficient: req.body.IntelligenceSTP
       },
+      wisdom: {
+        bonus: req.body.WisdomST,
+        proficient: req.body.WisdomSTP
+      },
+      charisma: {
+        bonus: req.body.CharismaST,
+        proficient: req.body.CharismaSTP
+      }
     },
     skills: {
       acrobatics: {
-        type: req.body.AcrobaticsType,
         bonus: req.body.AcrobaticsBonus,
         proficient: req.body.AcrobaticsProf
       },
       animalHandling: {
-        type: req.body.AnimalHandlingType,
         bonus: req.body.AnimalHandlingBonus,
         proficient: req.body.AnimalHandlingProf
       },
       arcana: {
-        type: req.body.ArcanaType,
         bonus: req.body.ArcanaBonus,
         proficient: req.body.ArcanaProf
       },
       athletics: {
-        type: req.body.AthleticsType,
         bonus: req.body.AthleticsBonus,
         proficient: req.body.AthleticsProf
       },
       deception: {
-        type: req.body.DeceptionType,
         bonus: req.body.DeceptionBonus,
         proficient: req.body.DeceptionProf
       },
       history: {
-        type: req.body.HistoryType,
         bonus: req.body.HistoryBonus,
         proficient: req.body.HistoryProf
       },
       insight: {
-        type: req.body.InsightType,
         bonus: req.body.InsightBonus,
         proficient: req.body.InsightProf
       },
       investigation: {
-        type: req.body.InvestigationType,
         bonus: req.body.InvestigationBonus,
         proficient: req.body.InvestigationProf
       },
       medicine: {
-        type: req.body.MedicineType,
         bonus: req.body.MedicineBonus,
         proficient: req.body.MedicineProf
       },
       nature: {
-        type: req.body.NatureType,
         bonus: req.body.NatureBonus,
         proficient: req.body.NatureProf
       },
       perception: {
-        type: req.body.PerceptionType,
         bonus: req.body.PerceptionBonus,
         proficient: req.body.PerceptionProf
       },
       performance: {
-        type: req.body.PerformanceType,
         bonus: req.body.PerformanceBonus,
         proficient: req.body.PerformanceProf
       },
       persuasion: {
-        type: req.body.PersuasionType,
         bonus: req.body.PersuasionBonus,
         proficient: req.body.PersuasionProf
       },
       religion: {
-        type: req.body.ReligionType,
         bonus: req.body.ReligionBonus,
         proficient: req.body.ReligionProf
       },
       sleightOfHand: {
-        type: req.body.SleightOfHandType,
         bonus: req.body.SleightOfHandBonus,
         proficient: req.body.SleightOfHandProf
       },
       stealth: {
-        type: req.body.StealthType,
         bonus: req.body.StealthBonus,
         proficient: req.body.StealthProf
       },
       survival: {
-        type: req.body.SurvivalType,
         bonus: req.body.SurvivalBonus,
         proficient: req.body.SurvivalProf
       }
@@ -179,7 +169,8 @@ router.post('/add', async (req, res) => {
     alignment: req.body.alignment,
     languages: req.body.languages,
     passivePerception: req.body.passivePerception,
-    inspiration: req.body.inspiration
+    inspiration: req.body.inspiration,
+    proficiencies: req.body.proficiencies
   });
 
   try {
